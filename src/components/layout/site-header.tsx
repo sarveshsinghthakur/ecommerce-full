@@ -16,6 +16,8 @@ import {
 import { cn } from "@/lib/cn";
 import { useCart, useSession } from "@/components/providers";
 
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+
 const NAV = [
   { href: "/products", label: "Shop" },
   { href: "/categories", label: "Categories" },
@@ -69,7 +71,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-surface)]/80">
       <div className="container-page flex h-16 items-center gap-4">
         <button
           type="button"
@@ -88,11 +90,11 @@ export function SiteHeader() {
         >
           <span
             aria-hidden
-            className="grid size-7 place-items-center rounded-lg bg-[var(--color-primary)] text-[13px] font-bold text-white"
+            className="grid size-7 place-items-center rounded-lg bg-[var(--color-primary)] text-[13px] font-bold text-white shadow-sm"
           >
             A
           </span>
-          <span className="text-[15px]">Aurora</span>
+          <span className="text-[15px] font-bold tracking-tight">Aurora</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
@@ -104,7 +106,7 @@ export function SiteHeader() {
                   className={cn(
                     "rounded-[var(--radius-control)] px-3 py-2 text-sm font-medium transition-colors",
                     pathname === item.href || pathname.startsWith(`${item.href}/`)
-                      ? "text-[var(--color-primary)]"
+                      ? "text-[var(--color-primary)] font-semibold"
                       : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
                   )}
                 >
@@ -139,7 +141,9 @@ export function SiteHeader() {
           </div>
         </form>
 
-        <div className="ml-auto flex items-center gap-1 md:ml-2">
+        <div className="ml-auto flex items-center gap-1.5 md:ml-2">
+          <ThemeToggle />
+
           {isAdmin ? (
             <Link
               href="/admin"
@@ -167,11 +171,11 @@ export function SiteHeader() {
             {accountOpen ? (
               <div
                 role="menu"
-                className="absolute right-0 top-full mt-2 w-56 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-1.5 shadow-[var(--shadow-popover)] animate-fade-in"
+                className="absolute right-0 top-full mt-2 w-56 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-1.5 shadow-[var(--shadow-popover)] animate-fade-in"
               >
                 {authenticated && user ? (
                   <>
-                    <div className="px-3 py-2">
+                    <div className="px-3 py-2 border-b border-[var(--color-border)] mb-1">
                       <p className="truncate text-sm font-medium text-[var(--color-foreground)]">
                         {user.name ?? user.email}
                       </p>
@@ -192,7 +196,7 @@ export function SiteHeader() {
                           router.refresh(),
                         );
                       }}
-                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-[var(--color-destructive)] hover:bg-[var(--color-destructive-soft)]"
                     >
                       <LogOut className="size-4" aria-hidden />
                       Sign out

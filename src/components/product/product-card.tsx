@@ -10,6 +10,8 @@ import { useToast } from "@/components/ui/toast";
 import { Price, discountPercent } from "@/components/ui/price";
 import { Badge } from "@/components/ui/badge";
 
+import { ImageWithFallback } from "@/components/ui/image-with-fallback";
+
 export interface ProductCardProps {
   product: ProductSummary;
   /** Renders without the add-to-cart affordance (e.g. in admin previews). */
@@ -48,30 +50,18 @@ export function ProductCard({ product, readOnly, priority }: ProductCardProps) {
   }
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white transition-shadow hover:shadow-[var(--shadow-card)]">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-200 hover:shadow-[var(--shadow-card)] hover:border-[var(--color-border-strong)]">
       <Link
         href={`/product/${product.slug}`}
         className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
         aria-label={product.title}
       >
         <div className="relative aspect-square overflow-hidden bg-[var(--color-muted)]">
-          {product.imageUrl ? (
-            // Imported marketplace images can live on any host, so these are
-            // rendered unoptimised instead of through the image optimiser.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              loading={priority ? "eager" : "lazy"}
-              fetchPriority={priority ? "high" : "auto"}
-              referrerPolicy="no-referrer"
-              className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div className="grid size-full place-items-center text-xs text-[var(--color-muted-foreground)]">
-              No image
-            </div>
-          )}
+          <ImageWithFallback
+            src={product.imageUrl ?? undefined}
+            alt={product.title}
+            className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          />
 
           <div className="absolute left-2 top-2 flex flex-col gap-1">
             {discount !== null ? (

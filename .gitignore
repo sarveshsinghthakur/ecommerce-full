@@ -39,3 +39,10 @@ next-env.d.ts
 # debug
 /tmp-dev.*
 *.log
+
+# python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
