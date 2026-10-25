@@ -432,7 +432,7 @@ export function CheckoutForm({ summary }: Props) {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={line.imageUrl}
-                      alt=""
+                      alt={line.title}
                       loading="lazy"
                       referrerPolicy="no-referrer"
                       className="size-full object-cover"

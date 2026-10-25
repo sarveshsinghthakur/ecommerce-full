@@ -125,7 +125,7 @@ export interface Order {
   discount_amount: number;
   tax_amount: number;
   total: number;
-  shipping_address: Record<string, any>;
+  shipping_address: Record<string, unknown>;
   placed_at: string;
   items: OrderItem[];
 }

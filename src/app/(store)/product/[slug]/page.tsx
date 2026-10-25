@@ -7,6 +7,7 @@ import { ProductCard, ProductGrid } from "@/components/product/product-card";
 import { PurchasePanel } from "@/components/product/purchase-panel";
 import { Price, discountPercent } from "@/components/ui/price";
 import { Badge } from "@/components/ui/badge";
+import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -97,10 +98,10 @@ export default async function ProductPage({ params }: Params) {
         <div className="space-y-3">
           <div className="aspect-square overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-muted)]">
             {gallery[0] ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <ImageWithFallback
                 src={gallery[0].url}
                 alt={gallery[0].alt ?? product.title}
+                fallbackSrc="/images/product-placeholder.svg"
                 referrerPolicy="no-referrer"
                 className="size-full object-cover"
                 fetchPriority="high"
@@ -120,9 +121,9 @@ export default async function ProductPage({ params }: Params) {
                   className="size-16 shrink-0 overflow-hidden rounded-md border border-[var(--color-border)] bg-white"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <ImageWithFallback
                     src={image.url}
-                    alt={image.alt ?? ""}
+                    alt={image.alt ?? product.title}
                     loading="lazy"
                     referrerPolicy="no-referrer"
                     className="size-full object-cover"

@@ -121,7 +121,7 @@ export default async function OrderDetailPage({
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={item.imageUrl}
-                        alt=""
+                        alt={item.title}
                         loading="lazy"
                         referrerPolicy="no-referrer"
                         className="size-full object-cover"

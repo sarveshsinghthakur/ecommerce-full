@@ -81,7 +81,7 @@ export default async function HomePage() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={product.imageUrl}
-                      alt=""
+                      alt={product.title}
                       loading="lazy"
                       referrerPolicy="no-referrer"
                       className="size-full object-cover"
@@ -122,7 +122,7 @@ export default async function HomePage() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={category.imageUrl}
-                      alt=""
+                      alt={category.name}
                       loading="lazy"
                       referrerPolicy="no-referrer"
                       className="size-full object-cover"

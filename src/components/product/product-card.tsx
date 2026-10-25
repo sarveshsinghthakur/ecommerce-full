@@ -60,6 +60,8 @@ export function ProductCard({ product, readOnly, priority }: ProductCardProps) {
           <ImageWithFallback
             src={product.imageUrl ?? undefined}
             alt={product.title}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
 

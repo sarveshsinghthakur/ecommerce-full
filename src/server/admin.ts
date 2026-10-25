@@ -222,7 +222,6 @@ export async function adminOverview(): Promise<AdminOverview> {
   };
 }
 
-export interface ProductWhereOps { }
 type ProductStatus = (typeof productStatusEnum.enumValues)[number];
 type OrderStatus = (typeof orderStatusEnum.enumValues)[number];
 
