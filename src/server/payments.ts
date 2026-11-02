@@ -173,7 +173,7 @@ export async function createRazorpayOrder(order: {
     amount: toProviderAmount(order.total, order.currency),
     currency: order.currency.toUpperCase(),
     receipt: order.orderNumber,
-    notes: { aurora_order_id: order.id, aurora_order_number: order.orderNumber },
+    notes: { loop_order_id: order.id, loop_order_number: order.orderNumber },
   });
   return {
     providerOrderId: String(created.id),
@@ -212,16 +212,16 @@ function safeEqual(a: string, b: string): boolean {
   return timingSafeEqual(left, right);
 }
 
-/** Resolves the Aurora order id referenced by a Razorpay payload. */
-export function auroraOrderIdFromPayload(payload: unknown): string | null {
+/** Resolves the Loop Studio order id referenced by a Razorpay payload. */
+export function loopOrderIdFromPayload(payload: unknown): string | null {
   if (typeof payload !== "object" || payload === null) return null;
   const notes = (payload as { notes?: Record<string, unknown> }).notes;
-  if (notes && typeof notes.aurora_order_id === "string") return notes.aurora_order_id;
+  if (notes && typeof notes.loop_order_id === "string") return notes.loop_order_id;
   const orderEntity = (payload as { order?: unknown }).order;
   if (orderEntity && typeof orderEntity === "object") {
     const nestedNotes = (orderEntity as { notes?: Record<string, unknown> }).notes;
-    if (nestedNotes && typeof nestedNotes.aurora_order_id === "string")
-      return nestedNotes.aurora_order_id;
+    if (nestedNotes && typeof nestedNotes.loop_order_id === "string")
+      return nestedNotes.loop_order_id;
   }
   return null;
 }

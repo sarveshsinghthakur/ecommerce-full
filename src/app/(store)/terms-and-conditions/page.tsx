@@ -3,20 +3,20 @@ import { StaticPage } from "@/components/store/static-page";
 
 export const metadata: Metadata = {
   title: "Terms & conditions",
-  description: "The terms that govern shopping with Aurora Store.",
+  description: "The terms that govern shopping with Loop Studio.",
 };
 
 export default function TermsPage() {
   return (
     <StaticPage
       title="Terms & conditions"
-      intro="These terms govern your use of Aurora Store. Placing an order means you accept them."
+      intro="These terms govern your use of Loop Studio. Placing an order means you accept them."
       updated="18 October 2026"
       sections={[
         {
           heading: "1. The store",
           paragraphs: [
-            "Aurora Store is an independent retailer. Product information is sourced from public marketplace listings, normalised into our catalogue, and reviewed by an administrator before publication.",
+            "Loop Studio is an independent retailer. Product information is sourced from public marketplace listings, normalised into our catalogue, and reviewed by an administrator before publication.",
           ],
         },
         {

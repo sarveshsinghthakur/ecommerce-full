@@ -68,8 +68,8 @@ def add_item_to_cart(
         db.refresh(new_item)
         return new_item
 
-def update_cart_item(db: Session, item_id: str, quantity: int) -> bool:
-    item = db.query(CartItem).filter(CartItem.id == item_id).first()
+def update_cart_item(db: Session, item_id: str, quantity: int, cart_id: str) -> bool:
+    item = db.query(CartItem).filter(CartItem.id == item_id, CartItem.cart_id == cart_id).first()
     if not item:
         return False
     if quantity <= 0:
@@ -79,8 +79,8 @@ def update_cart_item(db: Session, item_id: str, quantity: int) -> bool:
     db.commit()
     return True
 
-def remove_cart_item(db: Session, item_id: str) -> bool:
-    item = db.query(CartItem).filter(CartItem.id == item_id).first()
+def remove_cart_item(db: Session, item_id: str, cart_id: str) -> bool:
+    item = db.query(CartItem).filter(CartItem.id == item_id, CartItem.cart_id == cart_id).first()
     if not item:
         return False
     db.delete(item)

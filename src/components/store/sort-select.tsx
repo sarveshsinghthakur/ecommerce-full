@@ -5,6 +5,7 @@ import type { SortKey } from "@/server/catalog";
 
 const SORTS: Array<{ key: SortKey; label: string }> = [
   { key: "newest", label: "Newest" },
+  { key: "discount", label: "Biggest discount" },
   { key: "rating", label: "Top rated" },
   { key: "price_asc", label: "Price: low to high" },
   { key: "price_desc", label: "Price: high to low" },
@@ -46,7 +47,7 @@ export function SortSelect({
         id="sort-select"
         value={current}
         onChange={(event) => navigate(event.target.value as SortKey)}
-        className="h-9 rounded-[var(--radius-control)] border border-[var(--color-input)] bg-white px-2.5 text-sm text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        className="h-9 rounded-[var(--radius-control)] border border-[var(--color-input)] bg-[var(--color-surface)] px-2.5 text-sm text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
       >
         {SORTS.map((option) => (
           <option key={option.key} value={option.key}>

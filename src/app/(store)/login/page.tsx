@@ -6,7 +6,7 @@ import { safeNextPath } from "@/lib/redirect";
 
 export const metadata: Metadata = {
   title: "Sign in",
-  description: "Sign in to Aurora to sync your cart, wishlist and orders.",
+  description: "Sign in to Loop Studio to sync your cart, wishlist and orders.",
   robots: { index: false, follow: false },
 };
 
@@ -24,7 +24,7 @@ export default async function LoginPage({
       subtitle="Sign in to carry your cart and orders across devices."
       footer={
         <>
-          New to Aurora?{" "}
+          New to Loop Studio?{" "}
           <Link
             href={`/signup?next=${encodeURIComponent(target)}`}
             className="font-medium text-[var(--color-primary)] hover:underline"

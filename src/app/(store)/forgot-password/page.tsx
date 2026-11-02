@@ -5,7 +5,7 @@ import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 
 export const metadata: Metadata = {
   title: "Reset password",
-  description: "Request a link to reset your Aurora account password.",
+  description: "Request a link to reset your Loop Studio account password.",
   robots: { index: false, follow: false },
 };
 

@@ -219,7 +219,7 @@ function StatTile({
         <span
           className={
             tone === "warn"
-              ? "grid size-8 place-items-center rounded-lg bg-amber-50 text-amber-600"
+              ? "grid size-8 place-items-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300"
               : "grid size-8 place-items-center rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
           }
         >

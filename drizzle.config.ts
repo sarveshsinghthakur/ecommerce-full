@@ -4,7 +4,11 @@ config({ path: ".env" });
 
 import { defineConfig } from "drizzle-kit";
 
-const url = process.env.DATABASE_URL;
+const rawUrl = process.env.DATABASE_URL;
+const url = (rawUrl ?? "").replace(
+  /([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi,
+  "$1verify-full",
+);
 
 if (!url) {
   throw new Error(

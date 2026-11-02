@@ -115,12 +115,18 @@ export function SignupForm({ next }: Props) {
     event.preventDefault();
     if (busy) return;
     setError(null);
+    if (!validate()) return;
     setBusy("test");
     try {
       const res = await fetch("/api/auth/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ testEmail: email.trim(), testName: name.trim() || undefined }),
+        body: JSON.stringify({
+          testEmail: email.trim(),
+          testName: name.trim() || undefined,
+          testPassword: password,
+          testAction: "sign_up",
+        }),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -186,6 +192,37 @@ export function SignupForm({ next }: Props) {
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
               placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="test-password" required>
+              Password
+            </Label>
+            <Input
+              id="test-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+              error={localError && password !== confirm ? localError : null}
+              required
+            />
+            <p className="mt-1.5 text-xs text-[var(--color-muted-foreground)]">
+              At least {MIN_PASSWORD} characters.
+            </p>
+          </div>
+          <div>
+            <Label htmlFor="test-confirm" required>
+              Confirm password
+            </Label>
+            <Input
+              id="test-confirm"
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              autoComplete="new-password"
+              error={localError && confirm ? localError : null}
               required
             />
           </div>

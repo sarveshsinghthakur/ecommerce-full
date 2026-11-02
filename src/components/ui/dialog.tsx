@@ -116,7 +116,7 @@ export function Dialog({
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(
-          "relative z-10 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-popover)] animate-fade-in",
+          "relative z-10 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-popover)] animate-fade-in",
           "max-h-[90vh] overflow-y-auto outline-none",
           widths[size],
           className,
@@ -197,7 +197,7 @@ export function ConfirmDialog({
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="h-10 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-4 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-white disabled:opacity-50"
+            className="h-10 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-4 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-surface)] disabled:opacity-50"
           >
             {cancelLabel}
           </button>

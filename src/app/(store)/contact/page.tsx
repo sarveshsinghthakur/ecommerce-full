@@ -4,14 +4,14 @@ import { ContactForm } from "@/components/store/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the Aurora team — orders, returns, or anything else.",
+  description: "Get in touch with the Loop Studio team — orders, returns, or anything else.",
 };
 
 const CHANNELS = [
   {
     icon: Mail,
     label: "Email",
-    value: "support@aurorastore.example",
+    value: "support@loopstudio.example",
     note: "Replies within one business day",
   },
   {
@@ -41,7 +41,7 @@ export default function ContactPage() {
         </p>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_18rem]">
-          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5 sm:p-6">
+          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6">
             <ContactForm />
           </div>
 

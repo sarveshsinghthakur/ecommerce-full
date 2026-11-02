@@ -4,14 +4,14 @@ import { HelpCta, StaticPage } from "@/components/store/static-page";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "How Aurora sources, verifies and prices its catalogue — and why the markup is published.",
+    "How Loop Studio sources, verifies and prices its catalogue — and why the markup is published.",
 };
 
 export default function AboutPage() {
   return (
     <StaticPage
-      title="About Aurora"
-      intro="Aurora is a curated storefront that sources everyday essentials from established marketplaces, verifies every listing against its source, and sells them at a published, fixed markup."
+      title="About Loop Studio"
+      intro="Loop Studio is a curated storefront that sources everyday essentials from established marketplaces, verifies every listing against its source, and sells them at a published, fixed markup."
       sections={[
         {
           heading: "Why we publish the markup",

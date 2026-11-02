@@ -14,7 +14,7 @@ import { z } from "zod";
 
 const publicSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
-  NEXT_PUBLIC_APP_NAME: z.string().default("Aurora"),
+  NEXT_PUBLIC_APP_NAME: z.string().default("Loop Studio"),
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string().optional().default(""),
   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: z.string().optional().default(""),
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string().optional().default(""),

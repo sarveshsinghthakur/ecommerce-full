@@ -1,4 +1,4 @@
-# Aurora Store — Python FastAPI Backend
+# Loop Studio — Python FastAPI Backend
 
 High-performance, production-ready e-commerce backend built with Python FastAPI, SQLAlchemy 2.0, and Neon PostgreSQL.
 

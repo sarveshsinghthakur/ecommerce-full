@@ -9,7 +9,7 @@
  * Node route handlers. Signature verification is constant-time.
  */
 
-export const SESSION_COOKIE = "aurora_session";
+export const SESSION_COOKIE = "loop_session";
 export const SESSION_VERSION = 1;
 /** 7 days. Re-issued on every successful `/api/auth/session` call. */
 export const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;

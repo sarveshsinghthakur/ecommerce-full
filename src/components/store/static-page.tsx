@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal } from "@/components/animated";
 
 export interface StaticSection {
   heading: string;
@@ -24,44 +25,55 @@ export function StaticPage({
   return (
     <div className="container-page py-10 sm:py-14">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-balance text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl">
-          {title}
-        </h1>
-        <p className="mt-3 text-base leading-relaxed text-[var(--color-muted-foreground)]">
-          {intro}
-        </p>
+        <Reveal variant="left">
+          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-accent)]">
+            <span className="opacity-60">{"// "}</span>Documentation
+          </p>
+        </Reveal>
+        <Reveal variant="blur" delay={80}>
+          <h1 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl">
+            {title}
+          </h1>
+        </Reveal>
+        <Reveal delay={180}>
+          <p className="mt-3 text-base leading-relaxed text-[var(--color-muted-foreground)]">
+            {intro}
+          </p>
+        </Reveal>
         {updated ? (
           <p className="mt-2 text-xs text-[var(--color-muted-foreground)]">Last updated {updated}</p>
         ) : null}
 
         <div className="mt-9 space-y-9">
-          {sections.map((section) => (
-            <section key={section.heading}>
-              <h2 className="text-base font-semibold text-[var(--color-foreground)]">
-                {section.heading}
-              </h2>
-              {section.paragraphs?.map((paragraph) => (
-                <p
-                  key={paragraph}
-                  className="mt-2.5 text-sm leading-relaxed text-[var(--color-muted-foreground)]"
-                >
-                  {paragraph}
-                </p>
-              ))}
-              {section.bullets ? (
-                <ul className="mt-3 space-y-2">
-                  {section.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
-                      className="flex gap-2.5 text-sm leading-relaxed text-[var(--color-muted-foreground)]"
-                    >
-                      <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--color-primary)]" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </section>
+          {sections.map((section, index) => (
+            <Reveal key={section.heading} delay={(index % 4) * 70}>
+              <section>
+                <h2 className="text-base font-semibold text-[var(--color-foreground)]">
+                  {section.heading}
+                </h2>
+                {section.paragraphs?.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className="mt-2.5 text-sm leading-relaxed text-[var(--color-muted-foreground)]"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+                {section.bullets ? (
+                  <ul className="mt-3 space-y-2">
+                    {section.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="flex gap-2.5 text-sm leading-relaxed text-[var(--color-muted-foreground)]"
+                      >
+                        <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--color-primary)]" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </section>
+            </Reveal>
           ))}
         </div>
 
@@ -91,7 +103,7 @@ export function HelpCta({
         </Link>
         <Link
           href="/faq"
-          className="inline-flex h-9 items-center rounded-[var(--radius-control)] border border-[var(--color-border-strong)] bg-white px-4 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+          className="inline-flex h-9 items-center rounded-[var(--radius-control)] border border-[var(--color-border-strong)] bg-[var(--color-surface)] px-4 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
         >
           Read the FAQ
         </Link>

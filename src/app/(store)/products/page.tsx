@@ -9,12 +9,15 @@ import {
 import { ProductCard, ProductGrid } from "@/components/product/product-card";
 import { SortSelect } from "@/components/store/sort-select";
 import { EmptyState } from "@/components/ui/feedback";
+import { SectionLabel } from "@/components/ui/section-label";
+import { Reveal, Stagger, TextReveal } from "@/components/animated";
 import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
 
 const SORTS: Array<{ key: SortKey; label: string }> = [
   { key: "newest", label: "Newest" },
+  { key: "discount", label: "Biggest discount" },
   { key: "rating", label: "Top rated" },
   { key: "price_asc", label: "Price: low to high" },
   { key: "price_desc", label: "Price: high to low" },
@@ -27,6 +30,8 @@ interface SearchParams {
   max?: string;
   sort?: string;
   page?: string;
+  /** `deals=1` limits the listing to genuinely discounted products. */
+  deals?: string;
 }
 
 export default async function ProductsPage({
@@ -40,16 +45,26 @@ export default async function ProductsPage({
   const min = sp.min?.match(/^\d+(\.\d{1,2})?$/) ? sp.min : null;
   const max = sp.max?.match(/^\d+(\.\d{1,2})?$/) ? sp.max : null;
   const brand = sp.brand?.slice(0, 80) ?? null;
+  const dealsOnly = sp.deals === "1";
 
-  const [categories, brands, current] = await Promise.all([
-    listCategories(),
-    listBrands(),
-    listProducts({ page, pageSize: 24, sort, minPrice: min, maxPrice: max, brand }),
-  ]);
-
+  const categories = await listCategories();
   const activeCategory = sp.category
     ? categories.find((c) => c.slug === sp.category)
     : undefined;
+
+  const [brands, current] = await Promise.all([
+    listBrands(),
+    listProducts({
+      page,
+      pageSize: 24,
+      sort,
+      categoryId: activeCategory?.id ?? null,
+      minPrice: min,
+      maxPrice: max,
+      brand,
+      dealsOnly,
+    }),
+  ]);
 
   const baseUrl = "/products";
   function withParams(next: Record<string, string | null>): string {
@@ -60,6 +75,7 @@ export default async function ProductsPage({
       min,
       max,
       sort: sort === "newest" ? null : sort,
+      deals: dealsOnly ? "1" : null,
       ...next,
     };
     for (const [key, value] of Object.entries(merged)) {
@@ -80,10 +96,38 @@ export default async function ProductsPage({
           </li>
           <li aria-hidden>/</li>
           <li className="font-medium text-[var(--color-foreground)]">
-            {activeCategory ? activeCategory.name : "All products"}
+            {activeCategory
+              ? activeCategory.name
+              : dealsOnly
+                ? "Today's Deals"
+                : "All products"}
           </li>
         </ol>
       </nav>
+
+      <div className="mb-7">
+        <Reveal variant="left">
+          <SectionLabel>Catalogue · source-verified</SectionLabel>
+        </Reveal>
+        <TextReveal
+          as="h1"
+          className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl"
+          text={
+            activeCategory
+              ? activeCategory.name
+              : dealsOnly
+                ? "Today's Deals"
+                : "Every product on the shelf."
+          }
+        />
+        <Reveal delay={220}>
+          <p className="mt-2 max-w-2xl text-sm text-[var(--color-muted-foreground)]">
+            {dealsOnly
+              ? "Every listing below is genuinely marked down from its reference price — the discount shown is calculated from that reference."
+              : "Each listing was re-checked against its original source before it was published — the price you see already includes our fixed markup."}
+          </p>
+        </Reveal>
+      </div>
 
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
         <aside className="w-full shrink-0 lg:w-56">
@@ -92,7 +136,7 @@ export default async function ProductsPage({
             <h2 className="text-sm font-semibold">Filters</h2>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+          <div className="glass-panel rounded-3xl p-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
             <FilterGroup title="Category">
               <FilterLink href={withParams({ category: null, page: null })} active={!activeCategory}>
                 All products
@@ -136,6 +180,7 @@ export default async function ProductsPage({
                   <input type="hidden" name="category" value={activeCategory.slug} />
                 ) : null}
                 {brand ? <input type="hidden" name="brand" value={brand} /> : null}
+                {dealsOnly ? <input type="hidden" name="deals" value="1" /> : null}
                 {sort !== "newest" ? <input type="hidden" name="sort" value={sort} /> : null}
                 <label className="sr-only" htmlFor="min-price">
                   Minimum price
@@ -164,7 +209,7 @@ export default async function ProductsPage({
                 />
                 <button
                   type="submit"
-                  className="h-9 shrink-0 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium hover:bg-white"
+                  className="h-9 shrink-0 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium hover:bg-[var(--color-surface)]"
                 >
                   Apply
                 </button>
@@ -182,10 +227,21 @@ export default async function ProductsPage({
         </aside>
 
         <div className="min-w-0 flex-1">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="glass-panel mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-3">
             <p className="text-sm text-[var(--color-muted-foreground)]">
               {current.total} product{current.total === 1 ? "" : "s"}
               {activeCategory ? ` in ${activeCategory.name}` : ""}
+              {dealsOnly ? (
+                <>
+                  {" "}on deal{" "}
+                  <Link
+                    href={withParams({ deals: null, page: null })}
+                    className="font-medium text-[var(--color-primary)] hover:underline"
+                  >
+                    (clear)
+                  </Link>
+                </>
+              ) : null}
             </p>
             <SortSelect
               current={sort}
@@ -196,6 +252,7 @@ export default async function ProductsPage({
                   brand,
                   min,
                   max,
+                  deals: dealsOnly ? "1" : undefined,
                 }).filter(([, v]) => Boolean(v)) as [string, string][],
               )}
             />
@@ -203,11 +260,13 @@ export default async function ProductsPage({
 
           {current.items.length > 0 ? (
             <>
-              <ProductGrid>
-                {current.items.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </ProductGrid>
+              <Stagger itemClassName="h-full" step={50}>
+                <ProductGrid>
+                  {current.items.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </ProductGrid>
+              </Stagger>
 
               {current.pageCount > 1 ? (
                 <nav
@@ -286,7 +345,7 @@ function FilterLink({
         "flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
         active
           ? "bg-[var(--color-primary-soft)] font-medium text-[var(--color-primary)]"
-          : "text-[var(--color-muted-foreground)] hover:bg-white hover:text-[var(--color-foreground)]",
+          : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-surface)] hover:text-[var(--color-foreground)]",
       )}
     >
       <span className="truncate">{children}</span>
@@ -322,7 +381,7 @@ function PageLink({
   return (
     <Link
       href={href}
-      className="inline-flex h-9 items-center gap-1 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium text-[var(--color-foreground)] hover:bg-white"
+      className="inline-flex h-9 items-center gap-1 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-surface)]"
     >
       {icon}
       {label}

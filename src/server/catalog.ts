@@ -1,6 +1,17 @@
 import "server-only";
 
-import { and, desc, eq, gte, isNotNull, lte, or, sql, type SQL } from "drizzle-orm";
+import {
+  and,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNotNull,
+  lte,
+  or,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import { db } from "@/db";
 import { categories, productImages, products } from "@/db/schema";
 
@@ -10,7 +21,12 @@ import { categories, productImages, products } from "@/db/schema";
  * area through this module.
  */
 
-export type SortKey = "relevance" | "newest" | "price_asc" | "price_desc" | "rating";
+export type SortKey =
+  | "discount"
+  | "newest"
+  | "price_asc"
+  | "price_desc"
+  | "rating";
 
 export interface ProductCard {
   id: string;
@@ -26,6 +42,8 @@ export interface ProductCard {
   availability: string;
   categoryId: string | null;
   categorySlug: string | null;
+  /** Populated only when the catalog source explicitly flags the item. */
+  isBestseller?: boolean;
 }
 
 /** Raw shape selected by `cardColumns`; mirrors {@link ProductCard} with nullable prices. */
@@ -50,6 +68,12 @@ export interface ProductFilters {
   brand?: string | null;
   minPrice?: string | null;
   maxPrice?: string | null;
+  /** Minimum customer rating (0–5). Filters out products rated below it. */
+  minRating?: string | null;
+  /** When true, hides products whose availability is `out_of_stock`. */
+  inStockOnly?: boolean;
+  /** When true, keeps only products genuinely discounted off a reference price. */
+  dealsOnly?: boolean;
   sort?: SortKey;
   page?: number;
   pageSize?: number;
@@ -96,6 +120,19 @@ function publishedConditions(filters: ProductFilters): SQL[] {
   if (filters.brand) conditions.push(eq(products.brand, filters.brand));
   if (filters.minPrice) conditions.push(gte(products.sellingPrice, filters.minPrice));
   if (filters.maxPrice) conditions.push(lte(products.sellingPrice, filters.maxPrice));
+  // Rating is stored as numeric(3,2) and is nullable; unrated products are
+  // excluded whenever a minimum rating is requested.
+  if (filters.minRating) {
+    conditions.push(sql`${products.rating} >= ${Number(filters.minRating)}`);
+  }
+  if (filters.inStockOnly) {
+    conditions.push(sql`${products.availability} <> 'out_of_stock'`);
+  }
+  if (filters.dealsOnly) {
+    // `reference_price > selling_price` also excludes rows where the
+    // reference price is NULL (comparison yields NULL, not true).
+    conditions.push(sql`${products.referencePrice} > ${products.sellingPrice}`);
+  }
   return conditions;
 }
 
@@ -109,6 +146,20 @@ function orderClause(sort: SortKey | undefined): SQL[] {
       return [desc(products.rating), desc(products.reviewCount)];
     case "newest":
       return [desc(products.createdAt)];
+    case "discount":
+      // Discount fraction: (reference − selling) / reference. Rows without a
+      // genuine reference price sort last rather than being treated as 100% off.
+      return [
+        sql`case
+              when ${products.referencePrice} is not null
+               and ${products.referencePrice} > 0
+               and ${products.referencePrice} > ${products.sellingPrice}
+              then (${products.referencePrice} - ${products.sellingPrice}) / ${products.referencePrice}
+              else 0
+            end desc`,
+        desc(products.rating),
+        desc(products.reviewCount),
+      ];
     default:
       return [desc(products.publishedAt), desc(products.createdAt)];
   }
@@ -169,6 +220,64 @@ export async function listLatestProducts(limit = 8): Promise<ProductCard[]> {
     .orderBy(desc(products.publishedAt), desc(products.createdAt))
     .limit(limit);
   return rows.map(toCard);
+}
+
+export interface DealProduct extends ProductCard {
+  stockQuantity: number | null;
+}
+
+/**
+ * Biggest genuine discounts first (products whose selling price is below a
+ * real reference price). Powers the homepage Flash Deals row and its
+ * "View all deals" count.
+ */
+export async function listDealProducts(limit = 4): Promise<{
+  items: DealProduct[];
+  total: number;
+}> {
+  const where = and(
+    eq(products.status, "published"),
+    sql`${products.referencePrice} > ${products.sellingPrice}`,
+  );
+
+  const [countRow] = await db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(products)
+    .where(where);
+
+  const rows = await db
+    .select({ ...cardColumns, stockQuantity: products.stockQuantity })
+    .from(products)
+    .where(where)
+    .orderBy(
+      sql`(${products.referencePrice} - ${products.sellingPrice}) / ${products.referencePrice} desc`,
+      desc(products.rating),
+    )
+    .limit(Math.min(24, Math.max(1, limit)));
+
+  return {
+    items: rows.map((row) => ({ ...toCard(row), stockQuantity: row.stockQuantity })),
+    total: countRow?.n ?? 0,
+  };
+}
+
+/**
+ * Up to `limit` products under `maxPrice` (or at/above it when `minPrice` is
+ * given), best rated first. Powers the homepage "Shop by price" tiers.
+ */
+export async function listProductsByPriceBand(opts: {
+  minPrice?: string;
+  maxPrice?: string;
+  limit?: number;
+}): Promise<ProductCard[]> {
+  const page = await listProducts({
+    minPrice: opts.minPrice ?? null,
+    maxPrice: opts.maxPrice ?? null,
+    sort: "rating",
+    page: 1,
+    pageSize: opts.limit ?? 4,
+  });
+  return page.items;
 }
 
 export interface CategoryCard {
@@ -346,6 +455,28 @@ export async function listBrands(): Promise<string[]> {
   return rows.map((r) => r.brand).filter((b): b is string => Boolean(b));
 }
 
+export interface BrandFacet {
+  brand: string;
+  count: number;
+}
+
+/** Distinct published brands (with product counts) for a category facet. */
+export async function listBrandFacets(categoryId?: string | null): Promise<BrandFacet[]> {
+  const conditions: SQL[] = [eq(products.status, "published"), isNotNull(products.brand)];
+  if (categoryId) conditions.push(eq(products.categoryId, categoryId));
+
+  const rows = await db
+    .select({ brand: products.brand, n: sql<number>`count(*)::int` })
+    .from(products)
+    .where(and(...conditions))
+    .groupBy(products.brand)
+    .orderBy(desc(sql`count(*)`), products.brand);
+
+  return rows
+    .filter((r): r is { brand: string; n: number } => Boolean(r.brand))
+    .map((r) => ({ brand: r.brand, count: r.n }));
+}
+
 /* ----------------------------- full-text search ---------------------------- */
 
 export interface SearchResult {
@@ -428,6 +559,36 @@ export async function suggestProducts(term: string, limit = 6): Promise<ProductC
     .orderBy(desc(products.rating), desc(products.reviewCount))
     .limit(limit);
   return rows.map(toCard);
+}
+
+/**
+ * Resolves a wishlist of stored product ids back into catalogue rows.
+ *
+ * Used by the wishlist page: ids live in the browser, so the page posts them
+ * here to render real cards. Published products only, and only the ids that
+ * still exist — a saved item that was unpublished simply drops out.
+ */
+export async function getProductsByIds(
+  ids: string[],
+  limit = 60,
+): Promise<ProductCard[]> {
+  const unique = Array.from(
+    new Set(ids.map((id) => id.trim()).filter(Boolean)),
+  ).slice(0, limit);
+  if (unique.length === 0) return [];
+
+  const rows = await db
+    .select(cardColumns)
+    .from(products)
+    .where(and(eq(products.status, "published"), inArray(products.id, unique)))
+    .orderBy(desc(products.rating), desc(products.reviewCount))
+    .limit(limit);
+
+  const byId = new Map(rows.map((row) => [row.id, toCard(row)]));
+  // Preserve the shopper's own ordering rather than the query's.
+  return unique
+    .map((id) => byId.get(id))
+    .filter((row): row is ProductCard => Boolean(row));
 }
 
 function toCard(row: CardRow): ProductCard {

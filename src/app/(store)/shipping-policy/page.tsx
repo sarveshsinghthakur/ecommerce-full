@@ -10,7 +10,7 @@ export default function ShippingPolicyPage() {
   return (
     <StaticPage
       title="Shipping policy"
-      intro="How and when your Aurora order leaves our facility and reaches you."
+      intro="How and when your Loop Studio order leaves our facility and reaches you."
       updated="18 October 2026"
       sections={[
         {

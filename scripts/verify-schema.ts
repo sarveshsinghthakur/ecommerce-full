@@ -5,7 +5,13 @@ config({ path: ".env" });
 
 import { Pool } from "pg";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 1 });
+const pool = new Pool({
+  connectionString: (process.env.DATABASE_URL ?? "").replace(
+    /([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi,
+    "$1verify-full",
+  ),
+  max: 1,
+});
 
 async function main() {
   const t = await pool.query(

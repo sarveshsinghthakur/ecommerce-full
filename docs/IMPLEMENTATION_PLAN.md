@@ -65,3 +65,17 @@
 - Backend pytest test suite for FastAPI routes and Paytm service.
 - End-to-end flow checks in Antigravity browser subagent.
 - Produce `docs/ARCHITECTURE.md`, `docs/TEST_REPORT.md`, and updated root `README.md`.
+
+---
+
+## 9. UI/UX Refresh — Glass AMOLED Layer (implemented)
+
+- Preserve the catalogue and checkout flows while making the storefront feel more premium and tactile.
+- Use an iPhone-inspired glass surface language: translucent panels, high-contrast OLED dark mode, soft edge highlights, and restrained motion.
+- Add an opt-in Focus mode to visually de-emphasize secondary chrome while browsing; persist the preference between visits.
+- Delivered reusable `.glass-panel`, `.glass-glow`, and `.amoled-float` primitives with reduced-motion handling.
+- Tuned dark mode toward true AMOLED blacks and added ambient blue/cyan bloom behind the page.
+- Upgraded the sticky header, hero, and product cards with glass depth, glow, and lift interactions.
+- Added accessible `FocusModeToggle` with `aria-pressed`, keyboard support, and `localStorage` persistence.
+
+Follow-up: add a cart drawer with shared glass motion, a product quick-view dialog, and visual regression snapshots for light, dark, focus, and reduced-motion states.

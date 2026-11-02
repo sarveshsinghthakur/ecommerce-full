@@ -4,13 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from backend.app.core.config import settings
 from backend.app.api.v1.router import api_v1_router
+from backend.app.api.v1.health import router as health_router
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO if not settings.DEBUG else logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
-logger = logging.getLogger("aurora_api")
+logger = logging.getLogger("loop_api")
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -40,6 +41,11 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # Include API v1 Router
 app.include_router(api_v1_router)
+
+# Also expose health/readiness probes at the root — uptime monitors, load
+# balancers and container healthchecks typically probe /health and /ready
+# without knowing the /api/v1 prefix.
+app.include_router(health_router)
 
 # Health endpoint at root
 @app.get("/")

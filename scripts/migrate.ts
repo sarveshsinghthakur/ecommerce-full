@@ -15,10 +15,14 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 
 async function main() {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
+  const rawUrl = process.env.DATABASE_URL;
+  if (!rawUrl) {
     throw new Error("DATABASE_URL is not set. Copy .env.example -> .env.local");
   }
+  const url = rawUrl.replace(
+    /([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi,
+    "$1verify-full",
+  );
 
   const pool = new Pool({ connectionString: url, max: 1 });
   const db = drizzle(pool);

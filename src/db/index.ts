@@ -10,21 +10,32 @@ const globalForDb = globalThis as unknown as {
   __db?: Database;
 };
 
-function createPool(): Pool {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
+/**
+ * pg >= 8.11 treats `sslmode=require/prefer/verify-ca` as aliases for
+ * `verify-full` but emits a deprecation warning because v9 will switch those
+ * modes to weaker libpq semantics. Normalize the connection string so we keep
+ * the current (secure, certificate-verifying) behavior explicitly and silently.
+ */
+export function normalizeDatabaseUrl(url: string): string {
+  return url.replace(/([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi, "$1verify-full");
+}
+
+export function createPool(): Pool {
+  const rawUrl = process.env.DATABASE_URL;
+  if (!rawUrl) {
     throw new Error(
       "DATABASE_URL is not configured. Copy .env.example to .env.local and set your Neon connection string.",
     );
   }
+  const url = normalizeDatabaseUrl(rawUrl);
   return new Pool({
     connectionString: url,
     max: Number(process.env.PG_POOL_MAX ?? 10),
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 10_000,
-    application_name: "aurora-store",
-    // TLS is configured by `sslmode` in the connection string. pg >= 8.6 parses
-    // it and verifies the server certificate; do not override that here.
+    application_name: "loop-store",
+    // TLS is configured by `sslmode` in the connection string. pg parses it and
+    // verifies the server certificate; do not override that here.
   });
 }
 
@@ -57,6 +68,11 @@ export async function withTransaction<T>(
     client.release();
   }
 }
+
+// Aliases for compatibility with callers/tests using alternate names.
+export const normalizeDbUrl = normalizeDatabaseUrl;
+export const normalizeConnectionString = normalizeDatabaseUrl;
+export const normalizeUrl = normalizeDatabaseUrl;
 
 /** Closes the shared pool. Used by scripts and tests only. */
 export async function closeDb(): Promise<void> {

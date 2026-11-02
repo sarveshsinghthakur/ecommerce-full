@@ -36,7 +36,9 @@ export type AuditAction =
   | "coupon.create"
   | "coupon.update"
   | "admin.grant"
-  | "admin.revoke";
+  | "admin.revoke"
+  | "chat.message"
+  | "upload.image";
 
 export interface AuditEntry {
   action: AuditAction;

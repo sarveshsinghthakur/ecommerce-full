@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_FALLBACK = "/images/product-placeholder.svg";
 
@@ -23,6 +23,7 @@ export function ImageWithFallback({
   const [failed, setFailed] = useState(false);
   const [placeholderFailed, setPlaceholderFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     setFailed(false);
@@ -38,6 +39,22 @@ export function ImageWithFallback({
       ? undefined
       : fallbackSrc
     : src;
+
+  // Images can finish loading before React hydrates, in which case `onLoad`
+  // never fires and the skeleton would cover the finished image forever. Read
+  // the element's post-hydration state directly to close that gap.
+  useEffect(() => {
+    const el = imgRef.current;
+    if (!el || !el.complete) return;
+    if (el.naturalWidth > 0) {
+      setLoaded(true);
+      return;
+    }
+    // Completed without decoding ⇒ it failed before the handlers attached.
+    if (!el.currentSrc) return;
+    if (currentSrc === fallbackSrc) setPlaceholderFailed(true);
+    else setFailed(true);
+  }, [currentSrc, fallbackSrc]);
 
   const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (useFallback) {
@@ -63,6 +80,7 @@ export function ImageWithFallback({
       {currentSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          ref={imgRef}
           src={currentSrc}
           alt={alt}
           onError={handleError}

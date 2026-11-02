@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Your orders",
-  description: "Track and review every Aurora order.",
+  description: "Track and review every Loop Studio order.",
   robots: { index: false, follow: false },
 };
 
@@ -77,7 +77,7 @@ export default async function OrdersPage() {
             <li key={order.id}>
               <Link
                 href={`/orders/${order.id}`}
-                className="flex flex-wrap items-center justify-between gap-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-4 transition-shadow hover:shadow-[var(--shadow-card)] sm:p-5"
+                className="flex flex-wrap items-center justify-between gap-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-shadow hover:shadow-[var(--shadow-card)] sm:p-5"
               >
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-[var(--color-foreground)]">

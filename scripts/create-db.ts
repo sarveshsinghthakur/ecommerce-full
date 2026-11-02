@@ -6,7 +6,10 @@ config({ path: ".env" });
 import { Pool } from "pg";
 
 /** Uses the UNPOOLED url because CREATE DATABASE cannot run via pgbouncer. */
-const url = process.env.DATABASE_URL_UNPOOLED;
+const url = (process.env.DATABASE_URL_UNPOOLED ?? "").replace(
+  /([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi,
+  "$1verify-full",
+);
 const pool = new Pool({ connectionString: url, max: 1 });
 
 async function main() {

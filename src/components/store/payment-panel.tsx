@@ -81,7 +81,7 @@ export function PaymentPanel(props: Props) {
         key: created.keyId,
         amount: created.amount,
         currency: created.currency,
-        name: "Aurora",
+        name: "Loop Studio",
         description: props.orderNumber,
         order_id: created.providerOrderId,
         prefill: { email: props.email, contact: props.phone },

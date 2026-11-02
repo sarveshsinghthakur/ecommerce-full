@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { orders } from "@/db/schema";
 import {
-  auroraOrderIdFromPayload,
+  loopOrderIdFromPayload,
   markOrderPaid,
   verifyRazorpayWebhook,
 } from "@/server/payments";
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   }
 
   const event = (payload as { event?: string }).event ?? "";
-  const orderId = auroraOrderIdFromPayload(
+  const orderId = loopOrderIdFromPayload(
     (payload as { payload?: { payment?: { entity?: unknown } } }).payload?.payment?.entity ??
       payload,
   );

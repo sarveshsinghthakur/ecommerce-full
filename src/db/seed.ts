@@ -16,6 +16,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 config({ path: ".env" });
 
+import { existsSync } from "node:fs";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./index";
 import {
@@ -122,8 +123,19 @@ const PRODUCTS: SeedProduct[] = [
   { brand: "American Tourister", title: "Nash Daypack 25L", category: "Bags & Luggage", source: 1199, mrp: 2100, rating: 4.2, reviews: 3490, stock: 36, blurb: "A compact daily pack with a dedicated laptop compartment and a quick-reach front pocket." },
 ];
 
-function imageUrlFor(slug: string, index: number): string {
-  return `https://picsum.photos/seed/${encodeURIComponent(`${slug}-${index}`)}/800/800`;
+/**
+ * Resolves the catalogue photograph for a product.
+ *
+ * The seed originally invented `picsum.photos` URLs, so a backpack rendered a
+ * beach and a dog toy rendered a mountain. Curated photographs now live in
+ * `public/images/products/<slug>.jpg`; when one exists it is used verbatim so
+ * a re-seed reproduces the same imagery the store ships with. Anything
+ * without a curated file falls back to the real placeholder SVG rather than
+ * to a random photo that may not match the product at all.
+ */
+function imageUrlFor(slug: string): string {
+  const curated = `/images/products/${slug}.jpg`;
+  return existsSync(`public${curated}`) ? curated : "/images/product-placeholder.svg";
 }
 
 async function main() {
@@ -211,11 +223,16 @@ async function main() {
     if (!product) continue;
     inserted += 1;
 
-    await db.insert(productImages).values([
-      { id: newId("img"), productId: product.id, url: imageUrlFor(slug, 1), position: 0, source: "imported" },
-      { id: newId("img"), productId: product.id, url: imageUrlFor(slug, 2), position: 1, source: "imported" },
-      { id: newId("img"), productId: product.id, url: imageUrlFor(slug, 3), position: 2, source: "imported" },
-    ]);
+    // One row per product: the curated photograph. The three-row layout this
+    // replaced filled slots 1 and 2 with unrelated random photos, so the
+    // gallery showed two images of something else beside the real one.
+    await db.insert(productImages).values({
+      id: newId("img"),
+      productId: product.id,
+      url: imageUrlFor(slug),
+      position: 0,
+      source: "curated",
+    });
 
     await db.insert(productPriceHistory).values({
       id: newId("prh"),

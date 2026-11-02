@@ -7,7 +7,7 @@ import { newId, newToken } from "@/lib/ids";
 import { addMoney, formatMoney, toMinorUnits } from "@/lib/money";
 
 /** Cookie holding the anonymous cart id. httpOnly; never readable by JS. */
-export const GUEST_CART_COOKIE = "aurora_cart";
+export const GUEST_CART_COOKIE = "loop_cart";
 export const GUEST_CART_MAX_AGE = 60 * 60 * 24 * 30;
 
 import {

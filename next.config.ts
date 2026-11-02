@@ -10,9 +10,11 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://accounts.google.com",
-      "style-src 'self' 'unsafe-inline'",
+      // The Loop Studio design system loads Inter, Plus Jakarta Sans and the
+      // Material Symbols icon font as stylesheets from Google Fonts.
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob: https:",
-      "font-src 'self' data:",
+      "font-src 'self' data: https://fonts.gstatic.com",
       "connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://*.paytm.in https://*.paytm.com wss://*.firebaseio.com",
       "frame-src 'self' https://securegw.paytm.in https://securegw-stage.paytm.in https://*.paytm.in https://accounts.google.com",
       "object-src 'none'",

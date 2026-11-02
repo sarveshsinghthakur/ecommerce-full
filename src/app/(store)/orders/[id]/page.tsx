@@ -88,8 +88,8 @@ export default async function OrderDetailPage({
       ) : null}
 
       {needsPayment ? (
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-control)] border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-sm text-amber-800">
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-control)] border border-amber-200 bg-amber-50 px-4 py-3 dark:border-amber-500/30 dark:bg-amber-500/15">
+          <p className="text-sm text-amber-800 dark:text-amber-300">
             This order is waiting for payment. Unpaid orders may be cancelled
             automatically.
           </p>
@@ -104,7 +104,7 @@ export default async function OrderDetailPage({
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_20rem]">
         <div className="flex flex-col gap-6">
-          <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+          <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
               <Receipt className="size-4 text-[var(--color-primary)]" aria-hidden />
               Items
@@ -183,7 +183,7 @@ export default async function OrderDetailPage({
             </dl>
           </section>
 
-          <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+          <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
               <Truck className="size-4 text-[var(--color-primary)]" aria-hidden />
               Status history
@@ -210,7 +210,7 @@ export default async function OrderDetailPage({
         </div>
 
         <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
               <MapPin className="size-4 text-[var(--color-primary)]" aria-hidden />
               Shipping address
@@ -239,7 +239,7 @@ export default async function OrderDetailPage({
             </p>
           </div>
 
-          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5 text-sm">
+          <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-sm">
             <h2 className="text-sm font-semibold text-[var(--color-foreground)]">Delivery</h2>
             <p className="mt-2 text-[var(--color-muted-foreground)]">
               Dispatch within 24 hours on business days. Estimated delivery{" "}

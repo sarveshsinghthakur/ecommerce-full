@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AuroraMark } from "@/components/layout/brand-mark";
+import { BrandMark } from "@/components/layout/brand-mark";
 
 /** Centred card used by login / signup / reset-password. */
 export function AuthShell({
@@ -20,13 +20,13 @@ export function AuthShell({
           href="/"
           className="mx-auto mb-6 flex w-fit items-center gap-2 text-[var(--color-foreground)]"
         >
-          <AuroraMark className="size-8" />
+          <BrandMark className="size-8" />
           <span className="text-lg font-semibold tracking-tight">
-            {process.env.NEXT_PUBLIC_APP_NAME ?? "Aurora"}
+            {process.env.NEXT_PUBLIC_APP_NAME ?? "Loop Studio"}
           </span>
         </Link>
 
-        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)]">
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)]">
           <h1 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)]">
             {title}
           </h1>

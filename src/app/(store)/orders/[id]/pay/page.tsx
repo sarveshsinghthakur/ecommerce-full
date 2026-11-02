@@ -29,7 +29,7 @@ export default async function PayPage({ params }: { params: Promise<{ id: string
   if (order.paymentStatus === "paid" || order.status === "confirmed") {
     return (
       <div className="container-page py-16">
-        <div className="mx-auto max-w-md rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-8 text-center">
+        <div className="mx-auto max-w-md rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
           <h1 className="text-lg font-semibold text-[var(--color-foreground)]">
             Nothing to pay
           </h1>
@@ -57,7 +57,7 @@ export default async function PayPage({ params }: { params: Promise<{ id: string
           ← Back to {order.orderNumber}
         </Link>
 
-        <div className="mt-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)]">
+        <div className="mt-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)]">
           <p className="text-xs uppercase tracking-wide text-[var(--color-muted-foreground)]">
             Amount due
           </p>
@@ -82,7 +82,7 @@ export default async function PayPage({ params }: { params: Promise<{ id: string
         </div>
 
         <p className="mt-4 text-center text-xs text-[var(--color-muted-foreground)]">
-          Aurora never sees or stores your card number, CVV or banking password.
+          Loop Studio never sees or stores your card number, CVV or banking password.
         </p>
       </div>
     </div>

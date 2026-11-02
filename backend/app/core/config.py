@@ -10,14 +10,14 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    APP_NAME: str = "Aurora Store API"
+    APP_NAME: str = "Loop Studio API"
     APP_VERSION: str = "0.1.0"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
     # Database
     DATABASE_URL: str = Field(
-        default="postgresql://neondb_owner:npg_Y8ZlXUckB5jq@ep-icy-shape-a1dcm789-pooler.ap-southeast-1.aws.neon.tech/ecommerce?sslmode=require",
+        default="postgresql://neondb_owner:npg_Y8ZlXUckB5jq@ep-icy-shape-a1dcm789-pooler.ap-southeast-1.aws.neon.tech/ecommerce?sslmode=verify-full",
         description="Neon PostgreSQL connection string"
     )
 

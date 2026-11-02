@@ -70,7 +70,7 @@ export default async function AdminOrdersPage({
               "rounded-md px-2.5 py-1.5 text-sm transition-colors",
               key === status
                 ? "bg-[var(--color-primary)] font-medium text-white"
-                : "text-[var(--color-muted-foreground)] hover:bg-white hover:text-[var(--color-foreground)]",
+                : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-surface)] hover:text-[var(--color-foreground)]",
             )}
           >
             {LABELS[key]}
@@ -142,7 +142,7 @@ export default async function AdminOrdersPage({
                   "rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm",
                   result.page <= 1
                     ? "pointer-events-none opacity-50"
-                    : "text-[var(--color-foreground)] hover:bg-white",
+                    : "text-[var(--color-foreground)] hover:bg-[var(--color-surface)]",
                 )}
               >
                 Previous
@@ -157,7 +157,7 @@ export default async function AdminOrdersPage({
                   "rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm",
                   result.page >= result.pageCount
                     ? "pointer-events-none opacity-50"
-                    : "text-[var(--color-foreground)] hover:bg-white",
+                    : "text-[var(--color-foreground)] hover:bg-[var(--color-surface)]",
                 )}
               >
                 Next

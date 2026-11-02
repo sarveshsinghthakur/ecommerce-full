@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import {
   adminListProducts,
   PRODUCT_STATUSES,
@@ -63,6 +63,15 @@ export default async function AdminProductsPage({
       <PageHeader
         title="Products"
         description={`${result.total} product${result.total === 1 ? "" : "s"} in the catalog, across all statuses.`}
+        actions={
+          <Link
+            href="/admin/products/new"
+            className="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-control)] bg-[var(--color-primary)] px-3.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[var(--color-primary-hover)]"
+          >
+            <Plus className="size-4" aria-hidden />
+            Add product
+          </Link>
+        }
       />
 
       {/* Filters */}
@@ -77,7 +86,7 @@ export default async function AdminProductsPage({
                 "rounded-md px-2.5 py-1.5 text-sm transition-colors",
                 key === status
                   ? "bg-[var(--color-primary)] font-medium text-white"
-                  : "text-[var(--color-muted-foreground)] hover:bg-white hover:text-[var(--color-foreground)]",
+                  : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-surface)] hover:text-[var(--color-foreground)]",
               )}
             >
               {PRODUCT_STATUS_LABELS[key]}
@@ -102,7 +111,7 @@ export default async function AdminProductsPage({
           </div>
           <button
             type="submit"
-            className="h-9 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium hover:bg-white"
+            className="h-9 rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-3 text-sm font-medium hover:bg-[var(--color-surface)]"
           >
             Search
           </button>
@@ -120,6 +129,9 @@ export default async function AdminProductsPage({
                   <th className="px-4 py-3 text-right font-medium">Price</th>
                   <th className="px-4 py-3 text-right font-medium">Stock</th>
                   <th className="px-4 py-3 font-medium">Availability</th>
+                  <th className="px-4 py-3 text-right font-medium">
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -168,12 +180,20 @@ export default async function AdminProductsPage({
                         className={cn(
                           "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
                           product.availability === "out_of_stock"
-                            ? "border-amber-200 bg-amber-50 text-amber-700"
-                            : "border-emerald-200 bg-emerald-50 text-emerald-700",
+                            ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300"
+                            : "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300",
                         )}
                       >
                         {product.availability.replace(/_/g, " ")}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-sm font-medium text-[var(--color-primary)] hover:underline"
+                      >
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -193,7 +213,7 @@ export default async function AdminProductsPage({
                   "rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm",
                   result.page <= 1
                     ? "pointer-events-none opacity-50"
-                    : "text-[var(--color-foreground)] hover:bg-white",
+                    : "text-[var(--color-foreground)] hover:bg-[var(--color-surface)]",
                 )}
               >
                 Previous
@@ -208,7 +228,7 @@ export default async function AdminProductsPage({
                   "rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm",
                   result.page >= result.pageCount
                     ? "pointer-events-none opacity-50"
-                    : "text-[var(--color-foreground)] hover:bg-white",
+                    : "text-[var(--color-foreground)] hover:bg-[var(--color-surface)]",
                 )}
               >
                 Next

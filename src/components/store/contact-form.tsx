@@ -74,7 +74,7 @@ export function ContactForm() {
         <Button
           variant="outline"
           size="sm"
-          className="mt-4 bg-white"
+          className="mt-4 bg-[var(--color-surface)]"
           onClick={() => setStatus("idle")}
         >
           Send another message

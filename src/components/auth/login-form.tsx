@@ -13,6 +13,8 @@ interface Props {
   next: string;
 }
 
+const MIN_PASSWORD = 8;
+
 export function LoginForm({ next }: Props) {
   const router = useRouter();
   const session = useSession();
@@ -21,7 +23,6 @@ export function LoginForm({ next }: Props) {
   const [busy, setBusy] = useState<"email" | "google" | "test" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [testName, setTestName] = useState("");
-
   const firebaseReady = session.firebaseClientConfigured;
   const testReady = session.testModeAvailable;
   const loading = session.loading;
@@ -86,6 +87,10 @@ export function LoginForm({ next }: Props) {
     event.preventDefault();
     if (busy) return;
     setError(null);
+    if (password.length < MIN_PASSWORD) {
+      setError(`Use at least ${MIN_PASSWORD} characters for your password.`);
+      return;
+    }
     setBusy("test");
     try {
       const res = await fetch("/api/auth/session", {
@@ -94,6 +99,8 @@ export function LoginForm({ next }: Props) {
         body: JSON.stringify({
           testEmail: email.trim(),
           testName: testName.trim() || undefined,
+          testPassword: password,
+          testAction: "sign_in",
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -228,6 +235,24 @@ export function LoginForm({ next }: Props) {
               />
             </div>
           ) : null}
+
+          <div>
+            <Label htmlFor="test-password" required>
+              Password
+            </Label>
+            <Input
+              id="test-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              placeholder="Your account password"
+              required
+            />
+            <p className="mt-1.5 text-xs text-[var(--color-muted-foreground)]">
+              At least {MIN_PASSWORD} characters.
+            </p>
+          </div>
 
           <Button
             type="submit"

@@ -13,7 +13,11 @@ export const userRoleEnum = pgEnum("user_role", ["customer", "admin"]);
 /**
  * Normalized profile mirror of a Firebase Authentication user.
  * `firebaseUid` is the external identity key; the application never stores
- * passwords or provider credentials here.
+ * passwords or provider credentials here — with one deliberate exception:
+ * `passwordHash` is populated only by the local-development sign-in shim
+ * (AUTH_TEST_MODE), which must run without Firebase. It stays null for every
+ * Firebase-authenticated account, and the shim itself is hard-disabled in
+ * production.
  */
 export const users = pgTable(
   "users",
@@ -25,6 +29,8 @@ export const users = pgTable(
     displayName: text("display_name"),
     photoUrl: text("photo_url"),
     phone: text("phone"),
+    /** Dev-shim credential only; null for Firebase-managed accounts. */
+    passwordHash: text("password_hash"),
     role: userRoleEnum("role").notNull().default("customer"),
     disabled: boolean("disabled").notNull().default(false),
     lastLoginAt: timestamp("last_login_at", { withTimezone: true }),

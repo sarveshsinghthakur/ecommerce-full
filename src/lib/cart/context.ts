@@ -3,7 +3,7 @@ import "server-only";
 import type { NextResponse } from "next/server";
 import { getOrCreateCart, GUEST_CART_COOKIE, GUEST_CART_MAX_AGE } from "./index";
 import { loadUserByUid } from "@/lib/auth/authorize";
-import { readCookie, verifySession } from "@/lib/auth/session";
+import { readCookie, verifySession, SESSION_COOKIE } from "@/lib/auth/session";
 import { serverEnv } from "@/lib/env";
 
 export interface CartRequestContext {
@@ -29,7 +29,7 @@ export async function loadCartContext(
 ): Promise<CartRequestContext> {
   const header = request.headers.get("cookie");
   const payload = await verifySession(
-    readCookie(header, "aurora_session"),
+    readCookie(header, SESSION_COOKIE),
     serverEnv().APP_SECRET,
   );
   const user = payload ? await loadUserByUid(payload.uid) : null;

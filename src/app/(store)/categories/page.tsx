@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Categories",
-  description: "Browse every product category available at Aurora Store.",
+  description: "Browse every product category available at Loop Studio.",
 };
 
 export default async function CategoriesPage() {
@@ -43,7 +43,7 @@ export default async function CategoriesPage() {
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="group overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white transition-shadow hover:shadow-[var(--shadow-card)]"
+              className="group overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] transition-shadow hover:shadow-[var(--shadow-card)]"
             >
               <div className="aspect-[16/9] overflow-hidden bg-[var(--color-muted)]">
                 {category.imageUrl ? (
@@ -56,8 +56,13 @@ export default async function CategoriesPage() {
                     className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 ) : (
-                  <div className="grid size-full place-items-center text-xs text-[var(--color-muted-foreground)]">
-                    No image
+                  <div
+                    aria-hidden
+                    className="grid size-full place-items-center bg-gradient-to-br from-[var(--color-primary-soft)] via-white to-[var(--color-accent-soft)]"
+                  >
+                    <span className="text-4xl font-semibold tracking-tight text-[var(--color-border-strong)] transition-colors duration-300 group-hover:text-[var(--color-primary)]">
+                      {category.name.slice(0, 2).toUpperCase()}
+                    </span>
                   </div>
                 )}
               </div>

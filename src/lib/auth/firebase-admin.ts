@@ -73,8 +73,8 @@ async function getAuth(): Promise<AdminAuth> {
   const { getApps, initializeApp, cert } = await import("firebase-admin/app");
   const existing = getApps();
   const app =
-    existing.find((a) => a.name === "aurora") ??
-    initializeApp({ credential: cert(creds), projectId: creds.projectId }, "aurora");
+    existing.find((a) => a.name === "Loop Studio") ??
+    initializeApp({ credential: cert(creds), projectId: creds.projectId }, "Loop Studio");
 
   const { getAuth: adminGetAuth } = await import("firebase-admin/auth");
   cachedAuth = adminGetAuth(app);

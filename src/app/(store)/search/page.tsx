@@ -26,7 +26,7 @@ export default async function SearchPage({ searchParams }: Params) {
       <div className="container-page py-16">
         <EmptyState
           icon={<SearchX />}
-          title="Search Aurora"
+          title="Search Loop Studio"
           description="Type a product name, brand, or keyword in the search bar above to get started."
           action={
             <Link
@@ -95,7 +95,7 @@ export default async function SearchPage({ searchParams }: Params) {
               </Link>
               <Link
                 href="/categories"
-                className="inline-flex h-9 items-center rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-4 text-sm font-medium text-[var(--color-foreground)] hover:bg-white"
+                className="inline-flex h-9 items-center rounded-[var(--radius-control)] border border-[var(--color-border-strong)] px-4 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-surface)]"
               >
                 View categories
               </Link>

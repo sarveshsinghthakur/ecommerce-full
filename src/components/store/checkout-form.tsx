@@ -28,7 +28,7 @@ const METHOD_META: Record<
   },
   razorpay: {
     label: "Card, UPI or netbanking",
-    description: "Processed securely by Razorpay. Card details never reach Aurora.",
+    description: "Processed securely by Razorpay. Card details never reach Loop Studio.",
     icon: CreditCard,
   },
   test: {
@@ -172,7 +172,7 @@ export function CheckoutForm({ summary }: Props) {
           </div>
         ) : null}
 
-        <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+        <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <h2 className="text-sm font-semibold text-[var(--color-foreground)]">Deliver to</h2>
 
           {summary.addresses.length > 0 ? (
@@ -367,7 +367,7 @@ export function CheckoutForm({ summary }: Props) {
           ) : null}
         </section>
 
-        <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+        <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <h2 className="text-sm font-semibold text-[var(--color-foreground)]">Payment</h2>
 
           <div className="mt-3 flex flex-col gap-2">
@@ -419,7 +419,7 @@ export function CheckoutForm({ summary }: Props) {
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <h2 className="text-sm font-semibold text-[var(--color-foreground)]">
             Order summary
           </h2>

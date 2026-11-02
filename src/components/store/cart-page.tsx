@@ -87,7 +87,7 @@ export function CartPage() {
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_20rem]">
       <div>
-        <ul className="flex flex-col divide-y divide-[var(--color-border)] rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white">
+        <ul className="flex flex-col divide-y divide-[var(--color-border)] rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)]">
           {view.lines.map((line) => {
             const busy = busyId === line.id;
             const maxed = (line.stockQuantity ?? MAX_LINE_QUANTITY) <= line.quantity;
@@ -124,7 +124,7 @@ export function CartPage() {
                         {line.title}
                       </Link>
                       <p className="mt-0.5 text-xs text-[var(--color-muted-foreground)]">
-                        {line.brand ?? "Aurora"}
+                        {line.brand ?? "Loop Studio"}
                         {!line.purchasable ? " · Unavailable" : ""}
                       </p>
                     </div>
@@ -200,7 +200,7 @@ export function CartPage() {
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-5">
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <h2 className="text-sm font-semibold text-[var(--color-foreground)]">Order summary</h2>
 
           <dl className="mt-4 flex flex-col gap-2 text-sm">

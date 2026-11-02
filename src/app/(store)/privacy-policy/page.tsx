@@ -3,14 +3,14 @@ import { StaticPage } from "@/components/store/static-page";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
-  description: "What Aurora collects, why we collect it, and the control you have over it.",
+  description: "What Loop Studio collects, why we collect it, and the control you have over it.",
 };
 
 export default function PrivacyPage() {
   return (
     <StaticPage
       title="Privacy policy"
-      intro="This policy explains what information Aurora Store collects, how it is used, and the choices you have."
+      intro="This policy explains what information Loop Studio collects, how it is used, and the choices you have."
       updated="18 October 2026"
       sections={[
         {

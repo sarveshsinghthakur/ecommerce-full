@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+/* Tailwind v4's `dark:` variant defaults to the `prefers-color-scheme` media
+   query. This app toggles a `.dark` class on <html> (see the inline script in
+   layout.tsx + the ThemeToggle), so re-point the variant at the class instead. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* --------------------------------------------------------------------------
-   Aurora Store design tokens
+   Loop Studio design tokens
    Tailwind v4 configures utilities from these CSS variables via `@theme`.
    -------------------------------------------------------------------------- */
 
@@ -12,41 +17,164 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-foreground: #0b1220;
-  --color-muted: #f8fafc;
-  --color-muted-foreground: #64748b;
-  --color-subtle: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e1;
-  --color-input: #cbd5e1;
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
 
-  --color-primary: #4f46e5;
-  --color-primary-hover: #4338ca;
-  --color-primary-soft: #eef2ff;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  /* Loop Studio design tokens (from reference HTML designs) */
+  --color-background: #f8f9ff;
+  --color-surface: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e6eeff;
+  --color-surface-container-high: #dee9fc;
+  --color-surface-container-highest: #d9e3f6;
+  --color-surface-variant: #d9e3f6;
+  --color-foreground: #121c2a;
+  --color-on-surface: #121c2a;
+  --color-on-surface-variant: #434655;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-subtle: #eef2f7;
+  --color-border: #c4c5d8;
+  --color-border-strong: #747687;
+  --color-input: #c4c5d8;
+
+  --color-primary: #003bc7;
+  --color-primary-hover: #0037b9;
+  --color-primary-soft: #dde1ff;
+  --color-primary-container: #2855e8;
+  --color-primary-fixed: #dde1ff;
+  --color-primary-fixed-dim: #b8c4ff;
   --color-primary-foreground: #ffffff;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #001453;
+  --color-on-primary-fixed-variant: #0037b9;
+  --color-inverse-primary: #b8c4ff;
 
   --color-accent: #0d9488;
   --color-accent-soft: #ccfbf1;
+  --color-accent-2: #06b6d4;
 
-  --color-destructive: #dc2626;
-  --color-destructive-soft: #fee2e2;
+  /* Dark "anchor" surfaces: stat banner, footer, contrast sections. */
+  --color-anchor: #27313f;
+  --color-anchor-soft: #111827;
+  --color-anchor-border: #1e293b;
+  --color-inverse-surface: #27313f;
+  --color-inverse-on-surface: #eaf1ff;
+
+  --color-destructive: #ba1a1a;
+  --color-destructive-soft: #ffdad6;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
   --color-success: #059669;
   --color-success-soft: #d1fae5;
   --color-warning: #d97706;
   --color-warning-soft: #fef3c7;
-  --color-sale: #b45309;
-  --color-sale-soft: #fef3c7;
+  --color-sale: #ba1a1a;
+  --color-sale-soft: #ffdad6;
 
-  --radius-card: 0.875rem;
+  --color-secondary: #575e70;
+  --color-secondary-container: #d9dff5;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #5c6274;
+  --color-secondary-fixed: #dce2f7;
+  --color-secondary-fixed-dim: #c0c6db;
+  --color-on-secondary-fixed: #141b2b;
+  --color-on-secondary-fixed-variant: #404758;
+
+  --color-tertiary: #6d4300;
+  --color-tertiary-container: #8d5900;
+  --color-tertiary-fixed: #ffddb8;
+  --color-tertiary-fixed-dim: #ffb95f;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #ffdcb7;
+  --color-on-tertiary-fixed: #2a1700;
+  --color-on-tertiary-fixed-variant: #653e00;
+
+  --color-outline: #747687;
+  --color-surface-tint: #1e4ee2;
+  --outline-variant: #c4c5d8;
+
+  --radius-card: 0.75rem;
   --radius-control: 0.5rem;
   --radius-pill: 9999px;
 
-  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04),
-    0 8px 24px -12px rgb(15 23 42 / 0.12);
-  --shadow-popover: 0 4px 16px -4px rgb(15 23 42 / 0.12),
-    0 12px 40px -12px rgb(15 23 42 / 0.18);
+  --shadow-card: 0 1px 2px rgb(18 28 42 / 0.04),
+    0 8px 24px -12px rgb(18 28 42 / 0.12);
+  --shadow-popover: 0 4px 16px -4px rgb(18 28 42 / 0.12),
+    0 12px 40px -12px rgb(18 28 42 / 0.18);
+
+  /* Typography scale (Loop Studio) */
+  --text-headline-xl: 2.25rem;
+  --text-headline-lg: 1.875rem;
+  --text-headline-md: 1.5rem;
+  --text-headline-sm: 1.125rem;
+  --text-title-md: 1rem;
+  --text-label-md: 0.875rem;
+  --text-label-sm: 0.75rem;
+  --text-caption-micro: 0.625rem;
+  --text-body-lg: 1rem;
+  --text-body-md: 0.875rem;
+  --text-body-sm: 0.75rem;
+
+  --font-label-sm: 600 0.75rem/1.2 var(--font-sans);
+  --font-label-md: 600 0.875rem/1.2 var(--font-sans);
+  --font-headline-sm: 600 1.125rem/1.2 var(--font-heading);
+  --font-headline-md: 600 1.5rem/1.2 var(--font-heading);
+  --font-headline-lg: 700 1.875rem/1.1 var(--font-heading);
+  --font-headline-xl: 700 2.25rem/1.05 var(--font-heading);
+  --font-title-md: 500 1rem/1.3 var(--font-sans);
+  --font-body-lg: 400 1rem/1.5 var(--font-sans);
+  --font-body-md: 400 0.875rem/1.4 var(--font-sans);
+  --font-body-sm: 400 0.75rem/1.4 var(--font-sans);
+  --font-caption-micro: 400 0.625rem/1.2 var(--font-sans);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --gutter-sm: 1rem;
+
+  /* ----------------------------------------------------------------------
+     Spatial UI layer.
+
+     A restrained elevation scale for floating translucent panels. Each step
+     reads as an object hovering a little further from the canvas, which is
+     what gives the storefront its sense of depth without resorting to heavy
+     drop shadows or game-HUD styling.
+     ---------------------------------------------------------------------- */
+  --spatial-1: 0 1px 2px rgb(18 28 42 / 0.05), 0 2px 6px -2px rgb(18 28 42 / 0.08);
+  --spatial-2: 0 2px 4px rgb(18 28 42 / 0.05), 0 8px 20px -8px rgb(18 28 42 / 0.12);
+  --spatial-3: 0 4px 10px rgb(18 28 42 / 0.06), 0 18px 38px -14px rgb(18 28 42 / 0.16);
+  --spatial-4: 0 8px 18px rgb(18 28 42 / 0.07), 0 30px 60px -20px rgb(18 28 42 / 0.2);
+  --spatial-5: 0 12px 26px rgb(18 28 42 / 0.09), 0 46px 90px -28px rgb(18 28 42 / 0.26);
+
+  /* Refined, generous corner language (visionOS-adjacent continuous rounding). */
+  --radius-panel: 1.75rem;
+  --radius-tile: 1.25rem;
+  --radius-sheet: 2rem;
+
+  /* Motion: a single spring-like curve reused by every spatial transition. */
+  --ease-spatial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 520ms;
+
+  /* Frosted-surface tints. Light surfaces are near-white; dark surfaces are
+     charcoal rather than pure black so the blur still reads as glass. */
+  --glass-tint: 255 255 255;
+  --glass-edge: 255 255 255;
+  --glass-solid: #ffffff;
+  --spatial-ring: 12 30 74;
 }
 
 :root {
@@ -55,17 +183,92 @@
 
 .dark {
   color-scheme: dark;
-  --color-background: #090d16;
-  --color-surface: #111827;
+  --color-background: #020307;
+  --color-surface: #080b12;
+  --color-surface-container-lowest: #06080d;
+  --color-surface-container-low: #0b0f18;
+  --color-surface-container: #111827;
+  --color-surface-container-high: #172033;
+  --color-surface-container-highest: #1d2940;
+  --color-surface-variant: #334155;
   --color-foreground: #f8fafc;
+  --color-on-surface: #f8fafc;
+  --color-on-surface-variant: #94a3b8;
   --color-muted: #161f30;
   --color-muted-foreground: #94a3b8;
   --color-subtle: #1e293b;
-  --color-border: #1e293b;
-  --color-border-strong: #334155;
+  --color-border: #334155;
+  --color-border-strong: #475569;
   --color-input: #334155;
+
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
   --color-primary-soft: #1e1b4b;
+  --color-primary-container: #2563eb;
+  --color-primary-fixed: #3b82f6;
+  --color-primary-fixed-dim: #60a5fa;
+  --color-primary-foreground: #ffffff;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #001453;
+  --color-on-primary-fixed-variant: #0037b9;
+  --color-inverse-primary: #b8c4ff;
+
+  --color-accent: #2dd4bf;
   --color-accent-soft: #134e4a;
+
+  --color-anchor: #090d16;
+  --color-anchor-soft: #0f172a;
+  --color-anchor-border: #1e293b;
+  --color-inverse-surface: #27313f;
+  --color-inverse-on-surface: #eaf1ff;
+
+  --color-destructive: #f87171;
+  --color-destructive-soft: #3f1d1d;
+  --color-error: #f87171;
+  --color-error-container: #3f1d1d;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #fecaca;
+  --color-success: #34d399;
+  --color-success-soft: #10312a;
+  --color-warning: #fbbf24;
+  --color-warning-soft: #3a2a10;
+  --color-sale: #fbbf24;
+  --color-sale-soft: #3a2a10;
+
+  --color-secondary: #94a3b8;
+  --color-secondary-container: #334155;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #94a3b8;
+  --color-secondary-fixed: #cbd5e1;
+  --color-secondary-fixed-dim: #64748b;
+  --color-on-secondary-fixed: #0f172a;
+  --color-on-secondary-fixed-variant: #475569;
+
+  --color-tertiary: #fbbf24;
+  --color-tertiary-container: #451a03;
+  --color-tertiary-fixed: #fdba74;
+  --color-tertiary-fixed-dim: #fb923c;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #fcd34d;
+  --color-on-tertiary-fixed: #451a03;
+  --color-on-tertiary-fixed-variant: #78350f;
+
+  --color-outline: #94a3b8;
+  --color-surface-tint: #60a5fa;
+  --outline-variant: #475569;
+
+  /* Spatial UI layer — dark. Shadows are deeper and blurrier because the
+     canvas is near-black; glass tints invert to low-alpha charcoal. */
+  --spatial-1: 0 1px 2px rgb(0 0 0 / 0.5), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+  --spatial-2: 0 2px 4px rgb(0 0 0 / 0.5), 0 8px 22px -8px rgb(0 0 0 / 0.6);
+  --spatial-3: 0 4px 10px rgb(0 0 0 / 0.55), 0 18px 40px -14px rgb(0 0 0 / 0.7);
+  --spatial-4: 0 8px 18px rgb(0 0 0 / 0.6), 0 30px 62px -20px rgb(0 0 0 / 0.78);
+  --spatial-5: 0 12px 26px rgb(0 0 0 / 0.65), 0 46px 92px -28px rgb(0 0 0 / 0.85);
+
+  --glass-tint: 22 32 52;
+  --glass-edge: 148 163 184;
+  --glass-solid: #0b0f18;
+  --spatial-ring: 96 165 250;
 }
 
 * {
@@ -83,6 +286,347 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+body {
+  background-image: radial-gradient(circle at 15% -10%, rgb(37 99 235 / 0.09), transparent 34rem), radial-gradient(circle at 90% 0%, rgb(6 182 212 / 0.06), transparent 30rem);
+}
+
+.glass-panel {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.13), rgb(255 255 255 / 0.035));
+  border: 1px solid rgb(255 255 255 / 0.14);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 18px 50px rgb(0 0 0 / 0.16);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
+}
+
+.dark .glass-panel { background: linear-gradient(135deg, rgb(255 255 255 / 0.10), rgb(255 255 255 / 0.025)); border-color: rgb(148 163 184 / 0.18); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10), 0 20px 60px rgb(0 0 0 / 0.45); }
+.glass-glow { position: relative; isolation: isolate; }
+.glass-glow::before { content: ""; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; background: linear-gradient(120deg, rgb(59 130 246 / 0.34), transparent 42%, rgb(45 212 191 / 0.24)); filter: blur(18px); opacity: 0; transition: opacity .4s ease; }
+.glass-glow:hover::before, .glass-glow:focus-within::before { opacity: 1; }
+@keyframes amoled-float { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -8px, 0); } }
+.amoled-float { animation: amoled-float 7s ease-in-out infinite; }
+.focus-mode .glass-glow { box-shadow: 0 0 0 1px rgb(59 130 246 / .18), 0 24px 80px rgb(37 99 235 / .12); }
+
+.ambient-orb { position: absolute; display: block; border-radius: 999px; filter: blur(2px); opacity: .44; will-change: transform; animation: ambient-drift 16s ease-in-out infinite; }
+.ambient-orb-one { top: 10rem; left: -12rem; width: 28rem; height: 28rem; background: radial-gradient(circle, rgb(37 99 235 / .2), transparent 68%); }
+.ambient-orb-two { top: 40%; right: -14rem; width: 34rem; height: 34rem; background: radial-gradient(circle, rgb(45 212 191 / .14), transparent 68%); animation-delay: -6s; }
+.ambient-orb-three { bottom: -12rem; left: 24%; width: 26rem; height: 26rem; background: radial-gradient(circle, rgb(168 85 247 / .12), transparent 70%); animation-delay: -10s; }
+@keyframes ambient-drift { 0%,100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(3rem,-2rem,0) scale(1.12); } }
+.category-ring { position: relative; transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease; }
+.category-ring::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgb(255 255 255 / .42); pointer-events: none; }
+.group:hover .category-ring { transform: scale(1.08); box-shadow: 0 0 0 4px rgb(59 130 246 / .12), 0 10px 24px rgb(0 0 0 / .16); }
+@keyframes cart-pop { 0% { transform: scale(1); } 35% { transform: scale(1.14) rotate(-3deg); } 70% { transform: scale(.96) rotate(2deg); } 100% { transform: scale(1); } }
+.cart-pop { animation: cart-pop .52s cubic-bezier(.16,1,.3,1); }
+@keyframes cart-drawer-in { from { opacity: 0; transform: translate3d(2rem, 0, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+.cart-drawer-enter { animation: cart-drawer-in .35s cubic-bezier(.16,1,.3,1); }
+
+/* Perspective is intentionally restrained so product photography stays clear. */
+.spatial-card { transform-style: preserve-3d; perspective: 1100px; }
+@media (hover: hover) and (pointer: fine) {
+  .spatial-card:hover { transform: translateY(-5px) rotateX(1deg) rotateY(-1deg); box-shadow: 0 24px 65px rgb(0 0 0 / .22), inset 0 1px 0 rgb(255 255 255 / .14); }
+}
+.spatial-card > div:first-child { transform: translateZ(8px); }
+.spatial-card img { backface-visibility: hidden; }
+.glass-panel :focus-visible { outline-color: var(--color-primary-fixed-dim); }
+@media (max-width: 767px) {
+  .container-page { padding-bottom: 6rem; }
+}
+
+/* ==========================================================================
+   SPATIAL SURFACE SYSTEM
+   --------------------------------------------------------------------------
+   A small, deliberately restrained vocabulary of frosted surfaces. Rather
+   than sprinkling backdrop-filters everywhere (expensive, and quickly
+   illegible), components opt into one of four named depths:
+
+     glass-inset   recessed wells: inputs, chips, thumbnail rails
+     glass-surface the default floating panel: cards, menus, filter rails
+     glass-raised  prominent objects: hero copy, cart drawer, buy box
+     glass-hero    the cinematic backdrop layer behind a hero image
+
+   Each step raises opacity, edge light and shadow together so the hierarchy
+   is readable even in greyscale. Blur is capped: past ~24px the cost climbs
+   sharply while the visual gain flattens.
+   ========================================================================== */
+
+:root {
+  --glass-blur: 18px;
+  --glass-sat: 150%;
+}
+
+/* Ready-to-use colors derived from the triplets above. Declared once in
+   :root — custom properties resolve against the element's *own* computed
+   values, so the `.dark` overrides of --glass-tint/--glass-edge flow through
+   automatically without repeating these in every theme block. */
+:root {
+  /* Fills */
+  --glass-fill: rgb(var(--glass-tint) / 0.45);
+  --glass-fill-strong: rgb(var(--glass-tint) / 0.68);
+  --glass-fill-soft: rgb(var(--glass-tint) / 0.28);
+  /* Hairlines */
+  --glass-line: rgb(var(--glass-edge) / 0.16);
+  --glass-line-strong: rgb(var(--glass-edge) / 0.32);
+  /* Focus/hover ring color (RGB triplet, use as outline-[rgb(...)]). */
+  --ring-color: var(--color-primary);
+  /* Tinted accent ring for glass hover states. */
+  --glass-ring: rgb(var(--spatial-ring) / 0.55);
+}
+
+/* The glass surfaces live in the `components` layer so ordinary Tailwind
+   utilities (position, z-index, border-radius…) still override them. As
+   unlayered rules they outranked the `utilities` layer, which silently broke
+   any `glass-surface` element that also needed `absolute` positioning. */
+@layer components {
+  .glass-inset,
+  .glass-surface,
+  .glass-raised,
+  .glass-hero {
+    position: relative;
+    border: 1px solid rgb(var(--glass-edge) / 0.16);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    /* Isolates the backdrop so nested panels blur what is behind them instead
+       of stacking every ancestor's filter into one another. */
+    isolation: isolate;
+  }
+
+/* Recessed well: reads as *behind* the canvas. */
+.glass-inset {
+  background: linear-gradient(
+    160deg,
+    rgb(var(--glass-tint) / 0.42),
+    rgb(var(--glass-tint) / 0.2)
+  );
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 0.06),
+    inset 0 -1px 0 rgb(255 255 255 / 0.5);
+}
+
+/* Default floating panel. */
+.glass-surface {
+  background: linear-gradient(
+    150deg,
+    rgb(var(--glass-tint) / 0.72),
+    rgb(var(--glass-tint) / 0.44)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.65),
+    var(--spatial-2);
+  transition:
+    box-shadow var(--dur-base) var(--ease-spatial),
+    transform var(--dur-base) var(--ease-spatial),
+    border-color var(--dur-base) var(--ease-spatial);
+}
+
+/* Prominent object: brighter, higher, softer edge. */
+.glass-raised {
+  background: linear-gradient(
+    150deg,
+    rgb(var(--glass-tint) / 0.86),
+    rgb(var(--glass-tint) / 0.58)
+  );
+  border-color: rgb(var(--glass-edge) / 0.24);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    var(--spatial-4);
+}
+
+/* Cinematic backdrop behind hero imagery — the least opaque of the set so
+   photography stays the subject. */
+.glass-hero {
+  background: linear-gradient(
+    145deg,
+    rgb(var(--glass-tint) / 0.34),
+    rgb(var(--glass-tint) / 0.1)
+  );
+  border-color: rgb(var(--glass-edge) / 0.2);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    var(--spatial-5);
+}
+
+.dark .glass-inset {
+  background: linear-gradient(
+    160deg,
+    rgb(var(--glass-tint) / 0.5),
+    rgb(var(--glass-tint) / 0.22)
+  );
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 0.6),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+}
+.dark .glass-surface {
+  background: linear-gradient(
+    150deg,
+    rgb(var(--glass-tint) / 0.62),
+    rgb(var(--glass-tint) / 0.34)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    var(--spatial-3);
+}
+.dark .glass-raised {
+  background: linear-gradient(
+    150deg,
+    rgb(var(--glass-tint) / 0.74),
+    rgb(var(--glass-tint) / 0.46)
+  );
+  border-color: rgb(var(--glass-edge) / 0.2);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    var(--spatial-5);
+}
+.dark .glass-hero {
+  background: linear-gradient(
+    145deg,
+    rgb(var(--glass-tint) / 0.4),
+    rgb(var(--glass-tint) / 0.14)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    var(--spatial-5);
+}
+
+/* In-page anchors (#reviews, skip links) must clear the floating header. */
+:where(h1, h2, h3, h4, section[id], [id^="tab-"]) {
+  scroll-margin-top: calc(var(--header-h, 5.5rem) + 1rem);
+}
+
+/* Specular top-edge highlight reused by floating chips and pills. */
+.glass-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.28) 0%,
+    rgb(255 255 255 / 0) 42%
+  );
+  opacity: 0.7;
+}
+} /* @layer components */
+
+/* --------------------------------------------------------------------------
+   Depth lift — the shared hover response for any floating object. Combines a
+   small rise with a shadow bloom, and is switched off for touch pointers and
+   reduced motion so nothing jitters on a phone.
+   -------------------------------------------------------------------------- */
+.depth-lift {
+  transition:
+    transform var(--dur-base) var(--ease-spatial),
+    box-shadow var(--dur-base) var(--ease-spatial);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .depth-lift:hover {
+    transform: translate3d(0, -6px, 0);
+    box-shadow: var(--spatial-4);
+  }
+  .depth-lift:focus-within {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: var(--spatial-3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Parallax — driven by `--px` / `--py`, normalised -1..1 and written once per
+   frame by `usePointerPosition` (src/components/spatial/pointer-context.tsx).
+   Because the value lives in a custom property, a single pointer handler can
+   animate dozens of layers without re-rendering any of them.
+   -------------------------------------------------------------------------- */
+.parallax-layer {
+  transform: translate3d(
+    calc(var(--px, 0) * var(--depth, 8px)),
+    calc(var(--py, 0) * var(--depth, 8px)),
+    0
+  );
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+/* Rotation variant for panels that should tilt toward the cursor. */
+.parallax-tilt {
+  transform:
+    perspective(1200px)
+    rotateX(calc(var(--py, 0) * var(--tilt, 3deg) * -1))
+    rotateY(calc(var(--px, 0) * var(--tilt, 3deg)))
+    translate3d(0, calc(var(--lift, 0) * -1px), 0);
+  transform-style: preserve-3d;
+  transition: transform 160ms linear;
+}
+
+/* A soft specular sheen that tracks the pointer across a surface. */
+.sheen-follow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    340px circle at calc(50% + var(--px, 0) * 42%) calc(50% + var(--py, 0) * 42%),
+    rgb(255 255 255 / 0.35),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+.sheen-follow:hover::before,
+.sheen-follow:focus-within::before {
+  opacity: 1;
+}
+.dark .sheen-follow::before {
+  background: radial-gradient(
+    340px circle at calc(50% + var(--px, 0) * 42%) calc(50% + var(--py, 0) * 42%),
+    rgb(148 163 184 / 0.18),
+    transparent 62%
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Idle float — a very slow, small vertical drift that makes hero objects feel
+   suspended. Kept under 10px of travel so it never competes with content.
+   -------------------------------------------------------------------------- */
+@keyframes spatial-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -9px, 0); }
+}
+.float-slow {
+  animation: spatial-float 9s var(--ease-spatial) infinite;
+}
+.float-slower {
+  animation: spatial-float 13s var(--ease-spatial) infinite;
+  animation-delay: -4s;
+}
+
+/* Panel entrances: fade + settle, used by drawers and popovers. */
+@keyframes spatial-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+.spatial-rise {
+  animation: spatial-rise var(--dur-base) var(--ease-spatial) both;
+}
+
+@keyframes spatial-slide-right {
+  from { opacity: 0; transform: translate3d(100%, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+.spatial-slide-right {
+  animation: spatial-slide-right var(--dur-slow) var(--ease-spatial) both;
+}
+
+@keyframes spatial-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.spatial-fade {
+  animation: spatial-fade var(--dur-base) ease both;
+}
+
 
 ::selection {
   background: var(--color-primary-soft);
@@ -111,9 +655,52 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* --------------------------------------------------------------------------
+     Typography utilities.
+
+     The Loop Studio font tokens are full `font:` shorthands (weight, size,
+     line-height, family), so they cannot be used with Tailwind's text
+     arbitrary-value utility, which only accepts a font-size. These classes
+     apply the complete shorthand so headings keep their intended weight, size
+     and the Plus Jakarta Sans / Inter pairing from the reference designs.
+     -------------------------------------------------------------------------- */
+  .type-headline-xl {
+    font: var(--font-headline-xl);
+  }
+  .type-headline-lg {
+    font: var(--font-headline-lg);
+  }
+  .type-headline-md {
+    font: var(--font-headline-md);
+  }
+  .type-headline-sm {
+    font: var(--font-headline-sm);
+  }
+  .type-title-md {
+    font: var(--font-title-md);
+  }
+  .type-label-md {
+    font: var(--font-label-md);
+  }
+  .type-label-sm {
+    font: var(--font-label-sm);
+  }
+  .type-caption-micro {
+    font: var(--font-caption-micro);
+  }
+  .type-body-lg {
+    font: var(--font-body-lg);
+  }
+  .type-body-md {
+    font: var(--font-body-md);
+  }
+  .type-body-sm {
+    font: var(--font-body-sm);
+  }
 }
 
-@keyframes aurora-shimmer {
+@keyframes loop-shimmer {
   0% {
     background-position: -200% 0;
   }
@@ -126,14 +713,14 @@ body {
   background: linear-gradient(
     90deg,
     var(--color-subtle) 25%,
-    #e8edf3 37%,
+    var(--color-border-strong) 37%,
     var(--color-subtle) 63%
   );
   background-size: 200% 100%;
-  animation: aurora-shimmer 1.4s ease-in-out infinite;
+  animation: loop-shimmer 1.4s ease-in-out infinite;
 }
 
-@keyframes aurora-fade-in {
+@keyframes loop-fade-in {
   from {
     opacity: 0;
     transform: translateY(4px);
@@ -145,5 +732,206 @@ body {
 }
 
 .animate-fade-in {
-  animation: aurora-fade-in 0.18s ease-out;
+  animation: loop-fade-in 0.18s ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal system.
+   Elements start hidden (opacity/blur/offset) and transition to their resting
+   state once `.is-visible` is added by the IntersectionObserver in
+   <Reveal/>. Everything is inert without JS: the base styles are scoped to
+   `[data-reveal]` so a no-JS visitor still sees the content.
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="up"] {
+  transform: translate3d(0, 28px, 0);
+}
+
+[data-reveal="left"] {
+  transform: translate3d(-32px, 0, 0);
+  filter: blur(8px);
+}
+
+[data-reveal="right"] {
+  transform: translate3d(32px, 0, 0);
+  filter: blur(8px);
+}
+
+[data-reveal="blur"] {
+  transform: translate3d(0, 16px, 0);
+  filter: blur(14px);
+}
+
+[data-reveal="image"] {
+  filter: blur(18px);
+  transform: scale(1.06);
+}
+
+[data-reveal="scale"] {
+  transform: scale(0.96);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Word-by-word headline reveal. Pure CSS: runs as soon as the SSR HTML paints,
+   so it also works without JavaScript. */
+.text-reveal .word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translate3d(0, 0.5em, 0);
+  animation: loop-word-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--word-delay, 0ms);
+}
+
+@keyframes loop-word-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Left-to-right line wipe for section headings / dividers. */
+.text-wipe {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-foreground),
+    var(--color-foreground)
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  animation: loop-text-wipe 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+@keyframes loop-text-wipe {
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes loop-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: loop-marquee 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Page-level entrance used by <PageTransition> on route change. */
+@keyframes loop-page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-enter {
+  animation: loop-page-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hero backdrop: soft grid + indigo/teal wash like the reference design. */
+.hero-backdrop {
+  background-image:
+    radial-gradient(
+      60% 55% at 12% 8%,
+      rgb(37 99 235 / 0.1) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      50% 50% at 88% 20%,
+      rgb(13 148 136 / 0.1) 0%,
+      transparent 60%
+    ),
+    linear-gradient(rgb(15 23 42 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(15 23 42 / 0.045) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    44px 44px,
+    44px 44px;
+}
+
+.gradient-text {
+  background: linear-gradient(92deg, #2563eb 0%, #06b6d4 55%, #0d9488 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  .text-reveal .word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .text-wipe,
+  .page-enter,
+  .animate-marquee,
+  .amoled-float,
+  .ambient-orb,
+  .cart-pop,
+  .float-slow,
+  .float-slower,
+  .spatial-rise,
+  .spatial-slide-right,
+  .spatial-fade {
+    animation: none;
+    background-size: 100% 100%;
+  }
+
+  /* Parallax, tilt and hover lift all resolve to their resting state so a
+     reduced-motion visitor sees a completely still, fully legible page. */
+  .parallax-layer,
+  .parallax-tilt,
+  .depth-lift,
+  .spatial-card {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .sheen-follow::before {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }

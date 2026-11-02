@@ -1,8 +1,8 @@
 /**
- * Aurora wordmark glyph — a four-point sparkle inside a rounded square.
+ * Loop Studio wordmark glyph — an open loop ring inside a rounded square.
  * Uses `currentColor` so it inherits text colour in light and dark contexts.
  */
-export function AuroraMark({ className }: { className?: string }) {
+export function BrandMark({ className }: { className?: string }) {
   return (
     <span
       aria-hidden
@@ -13,9 +13,15 @@ export function AuroraMark({ className }: { className?: string }) {
       style={{ background: "var(--color-primary)", color: "white" }}
     >
       <svg viewBox="0 0 24 24" fill="none" className="size-5" aria-hidden>
-        <path
-          d="M12 2.5c.5 4.9 4.1 8.5 9 9-4.9.5-8.5 4.1-9 9-.5-4.9-4.1-8.5-9-9 4.9-.5 8.5-4.1 9-9Z"
-          fill="currentColor"
+        <circle
+          cx="12"
+          cy="12"
+          r="7"
+          stroke="currentColor"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeDasharray="33 11"
+          transform="rotate(-45 12 12)"
         />
       </svg>
     </span>

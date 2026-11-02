@@ -1,6 +1,6 @@
-# Aurora Store — Modern E-Commerce Platform
+# Loop Studio — Modern E-Commerce Platform
 
-Aurora Store is a polished, production-oriented e-commerce application featuring a modern minimalist interface, a Python FastAPI backend, Neon PostgreSQL, Firebase Google authentication, resilient product imagery, and Paytm Payment Gateway integration.
+Loop Studio is a polished, production-oriented e-commerce application featuring a modern minimalist interface, a Python FastAPI backend, Neon PostgreSQL, Firebase Google authentication, resilient product imagery, and Paytm Payment Gateway integration.
 
 ## Architecture
 

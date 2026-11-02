@@ -97,7 +97,7 @@ def update_item_quantity(
     session_val = session_id or request.cookies.get("cart_session")
     cart = get_or_create_cart(db, user_id=user.id if user else None, session_id=session_val if not user else None)
     
-    success = update_cart_item(db, item_id=item_id, quantity=payload.quantity)
+    success = update_cart_item(db, item_id=item_id, quantity=payload.quantity, cart_id=cart.id)
     if not success:
         raise HTTPException(status_code=404, detail="Cart item not found")
 
@@ -115,7 +115,7 @@ def delete_cart_item(
     session_val = session_id or request.cookies.get("cart_session")
     cart = get_or_create_cart(db, user_id=user.id if user else None, session_id=session_val if not user else None)
     
-    success = remove_cart_item(db, item_id=item_id)
+    success = remove_cart_item(db, item_id=item_id, cart_id=cart.id)
     if not success:
         raise HTTPException(status_code=404, detail="Cart item not found")
 

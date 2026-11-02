@@ -6,7 +6,7 @@ import { safeNextPath } from "@/lib/redirect";
 
 export const metadata: Metadata = {
   title: "Create account",
-  description: "Create an Aurora account to save your cart, wishlist and addresses.",
+  description: "Create an Loop Studio account to save your cart, wishlist and addresses.",
   robots: { index: false, follow: false },
 };
 

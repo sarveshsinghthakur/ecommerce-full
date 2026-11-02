@@ -5,11 +5,15 @@ config({ path: ".env" });
 
 import { Pool } from "pg";
 
-const url = process.env.DATABASE_URL;
-if (!url) {
+const rawUrl = process.env.DATABASE_URL;
+if (!rawUrl) {
   console.error("DATABASE_URL missing");
   process.exit(1);
 }
+const url = rawUrl.replace(
+  /([?&]sslmode=)(?:prefer|require|verify-ca)(?=&|$)/gi,
+  "$1verify-full",
+);
 
 const pool = new Pool({ connectionString: url, max: 1 });
 

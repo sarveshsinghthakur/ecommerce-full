@@ -93,7 +93,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               <div
                 key={item.id}
                 className={cn(
-                  "pointer-events-auto flex items-start gap-2.5 rounded-[var(--radius-control)] border bg-white p-3 shadow-[var(--shadow-popover)] animate-fade-in",
+                  "pointer-events-auto flex items-start gap-2.5 rounded-[var(--radius-control)] border bg-[var(--color-surface)] p-3 shadow-[var(--shadow-popover)] animate-fade-in",
                   item.tone === "error"
                     ? "border-[var(--color-destructive-soft)]"
                     : "border-[var(--color-border)]",

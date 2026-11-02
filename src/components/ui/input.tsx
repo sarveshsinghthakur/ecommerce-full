@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           aria-invalid={error ? true : undefined}
           aria-describedby={errorId}
           className={cn(
-            "h-10 w-full rounded-[var(--radius-control)] border bg-white px-3 text-sm text-[var(--color-foreground)]",
+            "h-10 w-full rounded-[var(--radius-control)] border bg-[var(--color-surface)] px-3 text-sm text-[var(--color-foreground)]",
             "placeholder:text-[var(--color-muted-foreground)]",
             "transition-colors duration-150",
             "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent",
@@ -70,7 +70,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-invalid={error ? true : undefined}
           aria-describedby={errorId}
           className={cn(
-            "min-h-24 w-full rounded-[var(--radius-control)] border bg-white px-3 py-2 text-sm text-[var(--color-foreground)]",
+            "min-h-24 w-full rounded-[var(--radius-control)] border bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-foreground)]",
             "placeholder:text-[var(--color-muted-foreground)]",
             "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent",
             "disabled:cursor-not-allowed disabled:bg-[var(--color-muted)]",
@@ -110,7 +110,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           aria-invalid={error ? true : undefined}
           aria-describedby={errorId}
           className={cn(
-            "h-10 w-full appearance-none rounded-[var(--radius-control)] border bg-white px-3 pr-9 text-sm text-[var(--color-foreground)]",
+            "h-10 w-full appearance-none rounded-[var(--radius-control)] border bg-[var(--color-surface)] px-3 pr-9 text-sm text-[var(--color-foreground)]",
             "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent",
             "disabled:cursor-not-allowed disabled:bg-[var(--color-muted)]",
             error

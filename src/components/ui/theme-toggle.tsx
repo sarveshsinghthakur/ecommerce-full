@@ -18,10 +18,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     setIsDark(nextDark);
     if (nextDark) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("aurora_theme", "dark");
+      localStorage.setItem("loop_theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("aurora_theme", "light");
+      localStorage.setItem("loop_theme", "light");
     }
   };
 
@@ -46,7 +46,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       {isDark ? (
         <Sun className="h-4 w-4 text-amber-400 transition-transform hover:rotate-45" />
       ) : (
-        <Moon className="h-4 w-4 text-slate-700 transition-transform hover:-rotate-12" />
+        <Moon className="h-4 w-4 text-[var(--color-foreground)] transition-transform hover:-rotate-12" />
       )}
     </button>
   );
